@@ -6,4 +6,4 @@ It demonstrates how these enhancements improve data visualization, interactivity
 The report includes practical examples of how these features can be leveraged to gain better insights from sales data.
 
 ## Dashboard Demo
-![PowerBI_Sales_Report_Favorite_2024_Features](demo/PBI_Favorite_2024_Features.gif)
+![PowerBI_Sales_Report_Favorite_2024_Features](demo/PBI_Favorite_2024_Features.png)
