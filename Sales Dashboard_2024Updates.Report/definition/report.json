@@ -1,0 +1,115 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/report/1.2.0/schema.json",
+  "themeCollection": {
+    "baseTheme": {
+      "name": "CY24SU02",
+      "reportVersionAtImport": "5.52",
+      "type": "SharedResources"
+    },
+    "customTheme": {
+      "name": "Frontier",
+      "reportVersionAtImport": "5.52",
+      "type": "SharedResources"
+    }
+  },
+  "layoutOptimization": "None",
+  "objects": {
+    "section": [
+      {
+        "properties": {
+          "verticalAlignment": {
+            "expr": {
+              "Literal": {
+                "Value": "'Top'"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "outspacePane": [
+      {
+        "properties": {
+          "expanded": {
+            "expr": {
+              "Literal": {
+                "Value": "false"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "publicCustomVisuals": [
+    "WordCloud1447959067750"
+  ],
+  "resourcePackages": [
+    {
+      "name": "SharedResources",
+      "type": "SharedResources",
+      "items": [
+        {
+          "name": "CY24SU02",
+          "path": "BaseThemes/CY24SU02.json",
+          "type": "BaseTheme"
+        },
+        {
+          "name": "Frontier",
+          "path": "BuiltInThemes/Frontier.json",
+          "type": "CustomTheme"
+        }
+      ]
+    },
+    {
+      "name": "RegisteredResources",
+      "type": "RegisteredResources",
+      "items": [
+        {
+          "name": "icons8-filter-5034679398755164836.png",
+          "path": "icons8-filter-5034679398755164836.png",
+          "type": "Image"
+        },
+        {
+          "name": "Pictuthemre16940433971183047.png",
+          "path": "Pictuthemre16940433971183047.png",
+          "type": "Image"
+        },
+        {
+          "name": "bike13848196191915285.png",
+          "path": "bike13848196191915285.png",
+          "type": "Image"
+        },
+        {
+          "name": "27790327492688001.png",
+          "path": "27790327492688001.png",
+          "type": "Image"
+        },
+        {
+          "name": "212668627982131508.png",
+          "path": "212668627982131508.png",
+          "type": "Image"
+        },
+        {
+          "name": "matrix5872791159154203.png",
+          "path": "matrix5872791159154203.png",
+          "type": "Image"
+        }
+      ]
+    }
+  ],
+  "settings": {
+    "useStylableVisualContainerHeader": true,
+    "defaultDrillFilterOtherVisuals": true,
+    "allowChangeFilterTypes": true,
+    "useEnhancedTooltips": true,
+    "useDefaultAggregateDisplayName": true
+  },
+  "slowDataSourceSettings": {
+    "isCrossHighlightingDisabled": false,
+    "isSlicerSelectionsButtonEnabled": false,
+    "isFilterSelectionsButtonEnabled": false,
+    "isFieldWellButtonEnabled": false,
+    "isApplyAllButtonEnabled": false
+  }
+}

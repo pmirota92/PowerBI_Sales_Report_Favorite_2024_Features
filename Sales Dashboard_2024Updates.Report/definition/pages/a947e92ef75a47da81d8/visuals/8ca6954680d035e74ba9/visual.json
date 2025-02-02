@@ -1,0 +1,109 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.5.0/schema.json",
+  "name": "8ca6954680d035e74ba9",
+  "position": {
+    "x": 696.65995975855128,
+    "y": 381.16700201207243,
+    "z": 21000,
+    "height": 123.62173038229376,
+    "width": 131.3480885311871,
+    "tabOrder": 21000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Space Between Series",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "color": "#505671"
+                    }
+                  }
+                ],
+                "listType": "ordered"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Overlap",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "color": "#505671"
+                    }
+                  }
+                ],
+                "listType": "ordered"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Flip Overlap",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "color": "#505671"
+                    }
+                  }
+                ],
+                "listType": "ordered"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Sort By Value",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "color": "#505671"
+                    }
+                  }
+                ],
+                "listType": "ordered"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "dropShadow": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

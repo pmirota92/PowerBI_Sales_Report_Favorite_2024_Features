@@ -1,0 +1,10 @@
+EVALUATE
+TOPN(  
+    3,  
+    FILTER(  
+        'Sales Raw Data',  
+        'Sales Raw Data'[Quantity] > 1
+    ),  
+    [Total Revenue],  
+    DESC  
+)

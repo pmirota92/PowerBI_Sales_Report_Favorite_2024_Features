@@ -1,0 +1,74 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.5.0/schema.json",
+  "name": "ee6b5ac529153e4f81b5",
+  "position": {
+    "x": 569.80708631158257,
+    "y": 51.943739912381837,
+    "z": 1000,
+    "height": 645.3616170932288,
+    "width": 667.39835523787565,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "pivotTable",
+    "query": {
+      "queryState": {
+        "Rows": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "05: Dictionary"
+                    }
+                  },
+                  "Property": "Expression"
+                }
+              },
+              "queryRef": "05: Dictionary.Expression",
+              "nativeQueryRef": "Expression",
+              "active": true
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "05: Dictionary"
+                  }
+                },
+                "Property": "Expression"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "557.592885491252D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "05: Dictionary.Expression"
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

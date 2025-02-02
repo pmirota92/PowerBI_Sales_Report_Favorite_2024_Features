@@ -1,0 +1,266 @@
+table 'Sales Raw Data'
+	lineageTag: 27c51f3f-43d8-4b3d-93d4-7f4abc55c611
+
+	measure 'YTD Sales' = TOTALYTD(sum('Sales Raw Data'[Sales]),'Date'[Date])
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: c80b588f-848c-4fd0-88ce-2d0f6cd81d6c
+
+	measure SalesPerPoduct = CALCULATE(sum('Sales Raw Data'[Sales]),ALLEXCEPT('Sales Raw Data','Sales Raw Data'[Product Category]))
+		lineageTag: 08eb1b61-17d2-41d0-a82d-9d43d4f726ca
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales ALL' = CALCULATE(sum('Sales Raw Data'[Sales]), ALL('Sales Raw Data'[Product Category]))
+		lineageTag: 42fe8b34-f8b8-4554-aef6-aef7d40504b9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Rank =
+			
+			IF (
+			    ISINSCOPE ( 'Sales Raw Data'[Sub Category] ),
+			    RANKX (
+			        ALLSELECTED ( 'Sales Raw Data'[Sub Category] ),
+			        [Total Sales]
+			    ),
+			    IF (
+			        ISINSCOPE ( 'Sales Raw Data'[Product Category] ),
+			        RANKX (
+			            ALLSELECTED ( 'Sales Raw Data'[Product Category] ),
+			            [Total Sales],
+			            ,
+			            DESC
+			        )
+			    )
+			)
+		formatString: 0
+		lineageTag: fe30fac2-6b40-4f73-b531-274a6e9bce82
+
+	measure TopProducts = ```
+			
+			TOPN(  
+			    3,  
+			    FILTER(  
+			        'Sales Raw Data',  
+			        'Sales Raw Data'[Quantity] > 100  
+			    ),  
+			    [Total Revenue],  
+			    DESC  
+			)
+			
+			
+			```
+		lineageTag: fa40ee34-8a96-4051-9459-42f3b7800f2f
+
+	measure 'Total Revenue' = sum('Sales Raw Data'[Revenue])
+		lineageTag: bd51eb3b-34a1-4533-9ad3-5e6cf375a0c5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'TOP 1' =
+			
+			CALCULATE (
+			    [Total Sales],
+			    KEEPFILTERS (
+			        TOPN (
+			            1,
+			            ALLSELECTED ( 'Sales Raw Data'[Sub Category] ),
+			            [Total Sales], DESC
+			        )
+			    )
+			)
+		lineageTag: 3f501257-360c-48e8-a036-ea2edf33e2e6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column index
+		dataType: int64
+		formatString: 0
+		lineageTag: a9a34313-4860-4272-beb8-8bd6ad3b2e0d
+		summarizeBy: sum
+		sourceColumn: index
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 091cbad9-b1dc-4f2f-a341-5682e34f3749
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Customer Age'
+		dataType: string
+		lineageTag: 45b61b6e-c5e6-4c4a-8d83-36e2f1139d9a
+		summarizeBy: none
+		sourceColumn: Customer Age
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Gender'
+		dataType: string
+		lineageTag: 787c3302-68aa-4d0f-9f94-84101b64f2ff
+		summarizeBy: none
+		sourceColumn: Customer Gender
+
+		annotation SummarizationSetBy = Automatic
+
+	column Country
+		dataType: string
+		lineageTag: 8673d4e6-3256-4bc8-af24-7d27bf74ae1a
+		dataCategory: Country
+		summarizeBy: none
+		sourceColumn: Country
+
+		annotation SummarizationSetBy = Automatic
+
+	column State
+		dataType: string
+		lineageTag: be22c250-13e7-49bc-88ef-e78cb483ec73
+		dataCategory: StateOrProvince
+		summarizeBy: none
+		sourceColumn: State
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Category'
+		dataType: string
+		lineageTag: b3c09d2d-7efd-467c-b6c8-93db7c28384d
+		summarizeBy: none
+		sourceColumn: Product Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sub Category'
+		dataType: string
+		lineageTag: 2ff77ec7-54be-407b-90d1-6b0dca7fa947
+		summarizeBy: none
+		sourceColumn: Sub Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quantity
+		dataType: double
+		lineageTag: 06d2c0f9-253d-4c87-86c9-3aa9bac1f802
+		summarizeBy: sum
+		sourceColumn: Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Unit Cost'
+		dataType: double
+		lineageTag: a809f158-ec63-48f6-944b-02e003eca234
+		summarizeBy: sum
+		sourceColumn: Unit Cost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Unit Price'
+		dataType: double
+		lineageTag: c4534f23-f2c8-4f83-9d25-136ec5ee8b84
+		summarizeBy: sum
+		sourceColumn: Unit Price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Cost
+		dataType: double
+		lineageTag: 0e8ee69b-8160-468e-9319-3e39fa16aaa1
+		summarizeBy: sum
+		sourceColumn: Cost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Revenue
+		dataType: double
+		lineageTag: cdefe47d-29d1-420f-8fa9-91c9d72b999f
+		summarizeBy: sum
+		sourceColumn: Revenue
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Sales
+		dataType: double
+		lineageTag: 574b55c2-7193-45d0-9083-d31339c78863
+		summarizeBy: sum
+		sourceColumn: Sales
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Profit
+		dataType: double
+		lineageTag: b0354df8-a4a1-4e90-aea4-05c31a56f119
+		summarizeBy: sum
+		sourceColumn: Profit
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Birth Year'
+		dataType: int64
+		formatString: 0
+		lineageTag: 57bcac1a-fe8d-4e34-8035-3755d87f6a64
+		summarizeBy: sum
+		sourceColumn: Birth Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Generation
+		dataType: string
+		lineageTag: 76040288-50f1-4e06-91b4-8e2b64322ae0
+		summarizeBy: none
+		sourceColumn: Generation
+
+		annotation SummarizationSetBy = Automatic
+
+	column Result = FIND("Bikes", 'Sales Raw Data'[Sub Category], 1, 0)
+		formatString: 0
+		lineageTag: 86cfb26b-807e-4cd9-985e-68a0636ec1f7
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Sales Raw Data' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\pmiro\Documents\EasyAnalizy\salesforcourse-4fe2kehu.csv"),[Delimiter=",", Columns=16, Encoding=1250, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Quantity", type number}, {"Unit Cost", type number}, {"Unit Price", type number}, {"Cost", type number}, {"Revenue", type number}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Column1"}),
+				    #"Changed Type with Locale" = Table.TransformColumnTypes(#"Removed Columns", {{"Date", type date}}, "en-US"),
+				    #"Filtered Rows" = Table.SelectRows(#"Changed Type with Locale", each [Date] <> null and [Date] <> ""),
+				    #"Removed Columns1" = Table.RemoveColumns(#"Filtered Rows",{"Year", "Month"}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Removed Columns1",{{"index", Int64.Type}}),
+				    #"Added Custom" = Table.AddColumn(#"Changed Type1", "Sales", each [Quantity]*[Unit Price]),
+				    #"Changed Type2" = Table.TransformColumnTypes(#"Added Custom",{{"Sales", type number}}),
+				    #"Added Custom1" = Table.AddColumn(#"Changed Type2", "Profit", each [Sales]-[Cost]),
+				    #"Changed Type3" = Table.TransformColumnTypes(#"Added Custom1",{{"Profit", type number}}),
+				    #"Added Custom2" = Table.AddColumn(#"Changed Type3", "Birth Year", each Number.From(Date.Year([Date]))-Number.From([Customer Age])),
+				    #"Changed Type4" = Table.TransformColumnTypes(#"Added Custom2",{{"Birth Year", Int64.Type}}),
+				    #"Added Conditional Column" = Table.AddColumn(#"Changed Type4", "Generation", each if [Birth Year] <= 1964 then "Baby Boomers" else if [Birth Year] <= 1980 then "X" else if [Birth Year] <= 1994 then "Y (Millennials)" else if [Birth Year] <= 2010 then "Z (iGen)" else null),
+				    #"Reordered Columns" = Table.ReorderColumns(#"Added Conditional Column",{"index", "Date", "Customer Age", "Customer Gender", "Country", "State", "Product Category", "Quantity", "Unit Cost", "Unit Price", "Cost", "Revenue", "Sales", "Profit", "Birth Year", "Generation", "Sub Category"})
+				in
+				    #"Reordered Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

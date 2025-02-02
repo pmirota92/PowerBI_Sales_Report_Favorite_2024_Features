@@ -1,0 +1,49 @@
+table ParamValues
+	lineageTag: 7c604234-2960-4e72-9d2f-d0e6e478ad8b
+
+	column ParamValues
+		lineageTag: 66636cd9-fb3d-42d7-b935-8af29bdd8e62
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'ParamValues Order'
+
+		relatedColumnDetails
+			groupByColumn: 'ParamValues Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'ParamValues Fields'
+		isHidden
+		lineageTag: 09bcfe9a-5659-4bf2-b365-22067e28db0d
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'ParamValues Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'ParamValues Order'
+		isHidden
+		formatString: 0
+		lineageTag: caa6b3fb-e6f6-487d-b78a-c1e368c8924a
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition ParamValues = calculated
+		mode: import
+		source =
+				{
+				    ("Total Profit", NAMEOF('Calculations'[Total Profit]), 0),
+				    ("Total Margine", NAMEOF('Calculations'[Total Margine]), 1),
+				    ("Total Sales", NAMEOF('Calculations'[Total Sales]), 2)
+				}
+
+	annotation PBI_Id = f1edf64596c9407c8594fe50e153a87f
+

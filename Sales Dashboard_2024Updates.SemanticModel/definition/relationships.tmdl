@@ -1,0 +1,48 @@
+relationship 7c8cc0ce-037a-4a6c-a247-f8f11eafad20
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Date.Date
+	toColumn: LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501.Date
+
+relationship b7e0ca7f-726b-441a-962c-456a2d12da43
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Date.'Start of Month'
+	toColumn: LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c.Date
+
+relationship 19047c80-59bb-4145-865c-ce1f25556e00
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Date.'End of Month'
+	toColumn: LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad.Date
+
+relationship e76db560-6c06-435b-8445-69eb7ad8bb41
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Date.'Start of Week'
+	toColumn: LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5.Date
+
+relationship de3f0256-d839-44e1-85d4-ce8dc1e14a29
+	fromColumn: 'Sales Raw Data'.Date
+	toColumn: Date.Date
+
+relationship f50c9399-05f6-4d14-aab5-9b6e4e986739
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'Disconnected Date'.Date
+	toColumn: LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd.Date
+
+relationship 3b237f3a-c3bf-440d-ad21-cff64c3362aa
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'Disconnected Date'.'Start of Month'
+	toColumn: LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35.Date
+
+relationship 8e958b82-1e0f-415f-9393-5cf90c51023e
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'Disconnected Date'.'End of Month'
+	toColumn: LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf.Date
+
+relationship bacc3aeb-854a-4ed8-8b4b-0742ab4924a7
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'Disconnected Date'.'Start of Week'
+	toColumn: LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7.Date
+
+relationship f036d172-0311-48e0-a6e3-a17dd3504628
+	fromColumn: 'Sales Raw Data'.'Product Category'
+	toColumn: 'Product Type Order'.'Product Category'
+

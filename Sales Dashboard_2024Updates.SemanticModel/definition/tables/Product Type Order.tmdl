@@ -1,0 +1,34 @@
+table 'Product Type Order'
+	lineageTag: e07309b1-399c-420f-ae4e-90f0f9f021ec
+
+	column 'Product Category'
+		lineageTag: 001898da-9daf-46ed-9145-1e7a1038e90a
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Sales Raw Data[Product Category]
+		sortByColumn: 'Sales by Product'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sales by Product'
+		formatString: #,0.00
+		lineageTag: 6001f2ca-dcda-4465-9e31-67ad48fa1e6f
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Sales by Product]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Product Type Order' = calculated
+		mode: import
+		source = ```
+				
+					SUMMARIZE(
+						'Sales Raw Data',
+						'Sales Raw Data'[Product Category],
+						"Sales by Product", [SalesPerPoduct]
+					)
+				```
+
+	annotation PBI_Id = 8c81165369c24e0ab9f52406f879a673
+

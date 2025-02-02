@@ -1,0 +1,132 @@
+table 'z_Info.View.Relationships'
+	lineageTag: 0c757ed9-06f0-4260-b854-5f01f2b2654a
+
+	column ID
+		formatString: 0
+		lineageTag: 8cf27793-9571-4c8b-9849-efa134a279d5
+		summarizeBy: count
+		isNameInferred
+		sourceColumn: [ID]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Name
+		lineageTag: b6060ba9-fb94-4be6-a962-e40a58273677
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Name]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Relationship
+		lineageTag: 4e7dcbb7-691d-48b2-b870-011623945a6b
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Relationship]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Model
+		lineageTag: b9873acb-1e97-45c1-9982-25f14814ebbd
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Model]
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsActive
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: fccb0917-b18b-4922-843b-2ce0f35c1cc4
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [IsActive]
+
+		annotation SummarizationSetBy = Automatic
+
+	column CrossFilteringBehavior
+		lineageTag: 279a4c5e-9c68-440b-bd23-6f34cb0cae74
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [CrossFilteringBehavior]
+
+		annotation SummarizationSetBy = Automatic
+
+	column RelyOnReferentialIntegrity
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: a7341743-05b7-446f-b747-57b21160ebb2
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [RelyOnReferentialIntegrity]
+
+		annotation SummarizationSetBy = Automatic
+
+	column FromTable
+		lineageTag: 19393a2d-5b8e-4c11-8b4c-57c29a9ba8c9
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [FromTable]
+
+		annotation SummarizationSetBy = Automatic
+
+	column FromColumn
+		lineageTag: 994ea0bf-9937-4dcc-af4c-dc5694584bbd
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [FromColumn]
+
+		annotation SummarizationSetBy = Automatic
+
+	column FromCardinality
+		lineageTag: e86dd208-6c96-4f86-90ce-0eaabd2b1535
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [FromCardinality]
+
+		annotation SummarizationSetBy = Automatic
+
+	column ToTable
+		lineageTag: 251fcc31-4fb6-4308-811c-508c9aeadaa8
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [ToTable]
+
+		annotation SummarizationSetBy = Automatic
+
+	column ToColumn
+		lineageTag: 49b130c6-588e-4ecd-9497-1e58eab63747
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [ToColumn]
+
+		annotation SummarizationSetBy = Automatic
+
+	column ToCardinality
+		lineageTag: 06524065-44d1-4077-b08e-f0262a04dbc9
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [ToCardinality]
+
+		annotation SummarizationSetBy = Automatic
+
+	column State
+		lineageTag: 38c8379d-73b7-4477-bfcb-1c714cdffa4c
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [State]
+
+		annotation SummarizationSetBy = Automatic
+
+	column SecurityFilteringBehavior
+		lineageTag: de5cdcba-0f7b-4038-b398-b5c9896209ce
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [SecurityFilteringBehavior]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'z_Info.View.Relationships' = calculated
+		mode: import
+		source = INFO.VIEW.RELATIONSHIPS()
+
+	annotation PBI_Id = 44a10a96890c40d5a16f00a757fffc03
+

@@ -1,0 +1,54 @@
+table ParamCol
+	lineageTag: 16d2987c-e8c5-440f-a45e-c3ffc060f9a6
+
+	column ParamCol
+		lineageTag: 4b4506de-128a-41e3-b703-e85f91308fb0
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'ParamCol Order'
+
+		relatedColumnDetails
+			groupByColumn: 'ParamCol Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'ParamCol Fields'
+		isHidden
+		lineageTag: dd6a25b2-99b7-4652-bc32-11257e23bfb8
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'ParamCol Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'ParamCol Order'
+		isHidden
+		formatString: 0
+		lineageTag: 153f33b3-7fb1-430c-afa9-ba5606bde066
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition ParamCol = calculated
+		mode: import
+		source =
+				{
+				    ("Generation", NAMEOF('Sales Raw Data'[Generation]), 0),
+				    ("Product Category", NAMEOF('Sales Raw Data'[Product Category]), 1),
+				    ("Sub Category", NAMEOF('Sales Raw Data'[Sub Category]), 2),
+				    ("Customer Gender", NAMEOF('Sales Raw Data'[Customer Gender]), 3),
+				    ("State", NAMEOF('Sales Raw Data'[State]), 4),
+				    ("Country", NAMEOF('Sales Raw Data'[Country]), 5),
+				    ("Year", NAMEOF('Date'[Year]), 6),
+				    ("Month Name Short", NAMEOF('Date'[Month Name Short]), 7)
+				}
+
+	annotation PBI_Id = 4e768fd819b247868f4b0a2a8264d057
+

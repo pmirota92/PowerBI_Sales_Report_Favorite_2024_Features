@@ -1,0 +1,2161 @@
+table Calculations
+	lineageTag: 85957004-9db1-47c8-b19e-bfa89bb08725
+
+	measure BarToHighlight =
+			
+			VAR _slectedmth=VALUES('Disconnected Date'[Month Name])
+			VAR _mthtohighlight=SELECTEDVALUE('Date'[Month Name])
+			VAR _filtered= ISFILTERED('Disconnected Date'[Month Name])
+			VAR _result=SWITCH(TRUE, NOT(_filtered), "#136862",
+			            _mthtohighlight IN _slectedmth
+			            && _filtered,  "#136862",  "#FFE4AD")
+			RETURN
+			_result
+		lineageTag: 582504cd-e04a-47cc-9bf3-e714942b4a34
+
+	measure 'Total Sales' = CALCULATE(SUM('Sales Raw Data'[Sales]))
+		lineageTag: 413681e5-d124-4c4b-91e4-7897c3e186ef
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Profit' = CALCULATE(SUM('Sales Raw Data'[Profit]))
+		lineageTag: 0480a256-450b-483f-8a09-756409c5a222
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Units' = CALCULATE(SUM('Sales Raw Data'[Quantity]))
+		lineageTag: b25e5101-87d5-4010-b9f6-23d04c2d028a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Margine' = DIVIDE([Total Profit],[Total Sales])
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 5a0ec50f-ffab-49a8-a27a-e67a1cbef85c
+
+	measure 'Total Profit (PM)' = CALCULATE([Total Profit], PREVIOUSMONTH('Date'[Date]))
+		lineageTag: fa3c1160-065e-4b32-9daa-e740bc92678d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Sales (PM)' = CALCULATE([Total Sales], PREVIOUSMONTH('Date'[Date]))
+		lineageTag: b140c3b2-778e-406c-bd64-f3e3f9c6ce0f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Units (PM)' = CALCULATE([Total Units], PREVIOUSMONTH('Date'[Date]))
+		lineageTag: 321629f1-0232-48e5-a63d-264df47334d7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Margine (PM)' = DIVIDE([Total Profit (PM)],[Total Sales (PM)])
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 71b9da36-a633-4331-9f65-7d7598946e48
+
+	measure 'Total Sales Var' = [Total Sales]-[Total Sales (PM)]
+		lineageTag: e46df070-282b-4f47-b4da-f5f4cf185317
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Prev Mth Selected' = ```
+			
+			VAR _prevmth= CALCULATE(max('Date'[Month Name]),PREVIOUSMONTH('Date'[Date])) & " (PM):"
+			
+			return
+			IF(ISBLANK([Total Sales]), Blank(), _prevmth)
+			
+			
+			```
+		lineageTag: 909a8024-a8a3-4587-9527-94e7553b2250
+
+	measure 'Total Sales Var %' = DIVIDE([Total Sales Var],[Total Sales])
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: dc3e37a4-d3bf-4b48-91f0-74d22387f790
+
+	measure 'Total Sales Var % Arrow' =
+			
+			
+			VAR _upparr=UNICHAR(129129)
+			VAR _darr=UNICHAR(129131)
+			VAR _varperc=[Total Sales Var %]
+			VAR _varnum= [Total Sales Var]
+			VAR _blank= ISBLANK([Total Sales])
+			return
+			If (_blank, blank(), IF(_varnum>0, round(_varperc,2)*100 & "% " & _upparr,
+			                                round(_varperc,2)*100 & "% " & _darr))
+		lineageTag: 65dc6d9a-f745-4ace-93ff-e2125d321f93
+
+	measure 'Total Units Var' = [Total Units]-[Total Units (PM)]
+		lineageTag: e94ad5f5-6dd4-425a-9a93-a683d0132a4d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Units Var %' = DIVIDE([Total Units Var], [Total Units])
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: b7b73377-7f72-4ea6-88a6-992daaa3df98
+
+	measure 'Total Units Var % Arrow' =
+			
+			
+			VAR _upparr=UNICHAR(129129)
+			VAR _darr=UNICHAR(129131)
+			VAR _varperc=[Total Units Var %]
+			VAR _varnum= [Total Units Var]
+			VAR _blank= ISBLANK([Total Units])
+			return
+			If (_blank, blank(), IF(_varnum>0, round(_varperc,2)*100 & "% " & _upparr,
+			                                round(_varperc,2)*100 & "% " & _darr))
+		lineageTag: 66858863-e76d-4359-b737-aed160c3c3b0
+
+	measure 'Total Profit Var' = [Total Profit]-[Total Profit (PM)]
+		lineageTag: 0903cc26-bcf7-4f25-8ea6-e179939b91c3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Profit Var %' = DIVIDE([Total Profit Var],[Total Profit])
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 35e2d1c6-8c3f-4265-a7b8-d0af29245544
+
+	measure 'Total Profit Var % Arrow' =
+			
+			
+			VAR _upparr=UNICHAR(129129)
+			VAR _darr=UNICHAR(129131)
+			VAR _varperc=[Total Profit Var %]
+			VAR _varnum= [Total Profit Var]
+			VAR _blank= ISBLANK([Total Profit])
+			return
+			If (_blank, blank(), IF(_varnum>0, round(_varperc,2)*100 & "% " & _upparr,
+			                                round(_varperc,2)*100 & "% " & _darr))
+		lineageTag: 209d4776-0229-48ae-8b39-3bd9cc79a24c
+
+	measure 'Total Margine Var' = [Total Margine]-[Total Margine (PM)]
+		lineageTag: 1ff1f819-582c-46b5-a59b-769917c4700a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Margine Var %' = DIVIDE([Total Margine Var],[Total Margine])
+		lineageTag: 93bf1297-1094-414b-a82e-e6ba2a95a5f6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Margine Var % Arrow' =
+			
+			
+			VAR _upparr=UNICHAR(129129)
+			VAR _darr=UNICHAR(129131)
+			VAR _varperc=[Total Margine Var %]
+			VAR _varnum= [Total Margine Var]
+			VAR _blank= ISBLANK([Total Margine])
+			return
+			If (_blank, blank(), IF(_varnum>0, round(_varperc,2)*100 & "% " & _upparr,
+			                                round(_varperc,2)*100 & "% " & _darr))
+		lineageTag: de3acf71-bfa7-4b5c-a7c9-00ae9cef6ff3
+
+	measure 'YTD Profit' = TOTALYTD([Total Profit],'Date'[Date])
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: bd285129-df0f-4dfb-bb02-9ccf7d9c7159
+
+	measure 'MTD Sales' = CALCULATE([Total Sales],DATESMTD('Date'[Date]))
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 275cc5b3-bca9-4d7d-b3f2-3c53af359951
+
+	measure 'LY Sales' = CALCULATE([Total Sales], PREVIOUSYEAR('Date'[Date]))
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 6f02185c-c948-435a-bb8a-38a63ae65f80
+
+	measure 'Highlight Bar' =
+			
+			VAR _highest=MAXX(ALLSELECTED('Date'[Month-Year]),[Total Sales])
+			VAR _lowest=MINX(ALLSELECTED('Date'[Month-Year]),[Total Sales])
+			VAR _RESULT=SWITCH(TRUE(), _highest=[Total Sales], "#9EBFB8",
+			                            _lowest=[Total Sales], "#EFB5B9",
+			                            "#FFE4AD")
+			RETURN
+			_RESULT
+		lineageTag: 1f0c593c-a7a7-469d-9ac7-27f8e625176d
+
+	measure highest = MAXX(ALLEXCEPT('Date','Date'[Month Name]),[Total Sales])
+		lineageTag: 41cb0156-309a-4ebb-b9dc-7f2b2d95f4f8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure BarToHighlight_v3 =
+			
+			VAR _Mth=ALLSELECTED('Date'[Day Name Short],'Date'[Day of Week Number])
+			VAR _currSales=[Total Sales]
+			VAR _rank=RANKX(_Mth, [Total Sales],_currSales,DESC)
+			VAR _result= If(_rank<=[Parameter Value], "#136862", "#FFE4AD")
+			RETURN
+			_result
+		lineageTag: 39165bad-f423-4b61-bac4-3c98c1c6b547
+
+	measure 'Sales Variance Center' = MAXX(ALLSELECTED('Sales Raw Data'[Sub Category]),[Total Units])*1.5
+		lineageTag: c78c72fd-612e-48eb-b3db-eeefb9ca98d9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales 2016' = CALCULATE([Total Sales],'Date'[Year]=YEAR(Date(2016,1,1)))
+		formatString: 0
+		lineageTag: 9c355f74-65cf-4242-b8f2-b07f42de16ec
+
+	measure 'Sales 2015' = CALCULATE([Total Sales],'Date'[Year]=YEAR(Date(2015,1,1)))
+		formatString: 0
+		lineageTag: 9a6f5a06-8ec7-4893-99f2-48bbae76ceea
+
+	measure 'Sales Variance' = [Total Units]-[Total Units (PM)]
+		formatString: 0
+		lineageTag: 6df82d2a-3c35-46ed-b66e-7d48c202eba6
+
+	measure 'Sales Variance positive' = If ([Total Sales]>[Total Sales (PM)], [Sales Variance])
+		lineageTag: da39c989-67b6-47f9-a16b-6072bd22b579
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales Variance Dummy' = [Sales Variance Center]
+		lineageTag: 6837b4d8-716c-42eb-933d-3b42c5c7d330
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales Variance negative' = If ([Total Sales]<[Total Sales (PM)], [Sales Variance])
+		lineageTag: 8c1c071b-168a-4575-983c-a36a78a1e302
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'lbl position left' = if([Total Units]<[Total Units (PM)],[Sales Variance Center]+[Sales Variance])
+		lineageTag: baf33b53-d5a3-4533-a8ad-56f29790e4a0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'lbl position right' = if([Total Units]>[Total Units (PM)],[Sales Variance Center]+[Sales Variance])
+		lineageTag: a068b0d8-c6bb-4772-a7ee-08c8560ada57
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Filters Applied' = ```
+			
+			VAR MaxFilters = 3
+			RETURN
+			IF ( 
+			    ISFILTERED ( 'Calculations'[Column1] ), 
+			    VAR ___f = FILTERS ( 'Calculations'[Column1] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Calculations'[Column1] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Calculations'[Column1], ", " )
+			    VAR ___x = "'Calculations'[Column1] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Date'[Date] ), 
+			    VAR ___f = FILTERS ( 'Date'[Date] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Date'[Date] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Date'[Date], ", " )
+			    VAR ___x = "'Date'[Date] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Date'[Date Integer] ), 
+			    VAR ___f = FILTERS ( 'Date'[Date Integer] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Date'[Date Integer] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Date'[Date Integer], ", " )
+			    VAR ___x = "'Date'[Date Integer] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Date'[Day Name] ), 
+			    VAR ___f = FILTERS ( 'Date'[Day Name] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Date'[Day Name] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Date'[Day Name], ", " )
+			    VAR ___x = "'Date'[Day Name] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Date'[Day Name Short] ), 
+			    VAR ___f = FILTERS ( 'Date'[Day Name Short] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Date'[Day Name Short] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Date'[Day Name Short], ", " )
+			    VAR ___x = "'Date'[Day Name Short] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Date'[Day of Month Number] ), 
+			    VAR ___f = FILTERS ( 'Date'[Day of Month Number] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Date'[Day of Month Number] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Date'[Day of Month Number], ", " )
+			    VAR ___x = "'Date'[Day of Month Number] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Date'[Day of Week Number] ), 
+			    VAR ___f = FILTERS ( 'Date'[Day of Week Number] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Date'[Day of Week Number] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Date'[Day of Week Number], ", " )
+			    VAR ___x = "'Date'[Day of Week Number] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Date'[Day of Year Number] ), 
+			    VAR ___f = FILTERS ( 'Date'[Day of Year Number] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Date'[Day of Year Number] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Date'[Day of Year Number], ", " )
+			    VAR ___x = "'Date'[Day of Year Number] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Date'[Day Offset] ), 
+			    VAR ___f = FILTERS ( 'Date'[Day Offset] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Date'[Day Offset] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Date'[Day Offset], ", " )
+			    VAR ___x = "'Date'[Day Offset] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Date'[Days in Month] ), 
+			    VAR ___f = FILTERS ( 'Date'[Days in Month] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Date'[Days in Month] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Date'[Days in Month], ", " )
+			    VAR ___x = "'Date'[Days in Month] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Date'[End of Month] ), 
+			    VAR ___f = FILTERS ( 'Date'[End of Month] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Date'[End of Month] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Date'[End of Month], ", " )
+			    VAR ___x = "'Date'[End of Month] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Date'[Is Weekday] ), 
+			    VAR ___f = FILTERS ( 'Date'[Is Weekday] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Date'[Is Weekday] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Date'[Is Weekday], ", " )
+			    VAR ___x = "'Date'[Is Weekday] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Date'[Is Weekend] ), 
+			    VAR ___f = FILTERS ( 'Date'[Is Weekend] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Date'[Is Weekend] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Date'[Is Weekend], ", " )
+			    VAR ___x = "'Date'[Is Weekend] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Date'[ISO Weeknumber] ), 
+			    VAR ___f = FILTERS ( 'Date'[ISO Weeknumber] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Date'[ISO Weeknumber] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Date'[ISO Weeknumber], ", " )
+			    VAR ___x = "'Date'[ISO Weeknumber] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Date'[ISO Year] ), 
+			    VAR ___f = FILTERS ( 'Date'[ISO Year] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Date'[ISO Year] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Date'[ISO Year], ", " )
+			    VAR ___x = "'Date'[ISO Year] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Date'[Month Name] ), 
+			    VAR ___f = FILTERS ( 'Date'[Month Name] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Date'[Month Name] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Date'[Month Name], ", " )
+			    VAR ___x = "'Date'[Month Name] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Date'[Month Name Default] ), 
+			    VAR ___f = FILTERS ( 'Date'[Month Name Default] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Date'[Month Name Default] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Date'[Month Name Default], ", " )
+			    VAR ___x = "'Date'[Month Name Default] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Date'[Month Name Short] ), 
+			    VAR ___f = FILTERS ( 'Date'[Month Name Short] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Date'[Month Name Short] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Date'[Month Name Short], ", " )
+			    VAR ___x = "'Date'[Month Name Short] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Date'[Month Of Year] ), 
+			    VAR ___f = FILTERS ( 'Date'[Month Of Year] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Date'[Month Of Year] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Date'[Month Of Year], ", " )
+			    VAR ___x = "'Date'[Month Of Year] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Date'[Month Offset] ), 
+			    VAR ___f = FILTERS ( 'Date'[Month Offset] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Date'[Month Offset] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Date'[Month Offset], ", " )
+			    VAR ___x = "'Date'[Month Offset] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Date'[Month-Year] ), 
+			    VAR ___f = FILTERS ( 'Date'[Month-Year] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Date'[Month-Year] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Date'[Month-Year], ", " )
+			    VAR ___x = "'Date'[Month-Year] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Date'[Quarter] ), 
+			    VAR ___f = FILTERS ( 'Date'[Quarter] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Date'[Quarter] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Date'[Quarter], ", " )
+			    VAR ___x = "'Date'[Quarter] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Date'[Quarter Number] ), 
+			    VAR ___f = FILTERS ( 'Date'[Quarter Number] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Date'[Quarter Number] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Date'[Quarter Number], ", " )
+			    VAR ___x = "'Date'[Quarter Number] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Date'[Quarter Offset] ), 
+			    VAR ___f = FILTERS ( 'Date'[Quarter Offset] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Date'[Quarter Offset] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Date'[Quarter Offset], ", " )
+			    VAR ___x = "'Date'[Quarter Offset] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Date'[Start of Month] ), 
+			    VAR ___f = FILTERS ( 'Date'[Start of Month] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Date'[Start of Month] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Date'[Start of Month], ", " )
+			    VAR ___x = "'Date'[Start of Month] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Date'[Start of Week] ), 
+			    VAR ___f = FILTERS ( 'Date'[Start of Week] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Date'[Start of Week] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Date'[Start of Week], ", " )
+			    VAR ___x = "'Date'[Start of Week] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Date'[Week Offset] ), 
+			    VAR ___f = FILTERS ( 'Date'[Week Offset] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Date'[Week Offset] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Date'[Week Offset], ", " )
+			    VAR ___x = "'Date'[Week Offset] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Date'[Year] ), 
+			    VAR ___f = FILTERS ( 'Date'[Year] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Date'[Year] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Date'[Year], ", " )
+			    VAR ___x = "'Date'[Year] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Date'[Year Default] ), 
+			    VAR ___f = FILTERS ( 'Date'[Year Default] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Date'[Year Default] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Date'[Year Default], ", " )
+			    VAR ___x = "'Date'[Year Default] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Date'[Year Offset] ), 
+			    VAR ___f = FILTERS ( 'Date'[Year Offset] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Date'[Year Offset] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Date'[Year Offset], ", " )
+			    VAR ___x = "'Date'[Year Offset] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Date'[Year-Quarter] ), 
+			    VAR ___f = FILTERS ( 'Date'[Year-Quarter] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Date'[Year-Quarter] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Date'[Year-Quarter], ", " )
+			    VAR ___x = "'Date'[Year-Quarter] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Date'[YYYY-MM] ), 
+			    VAR ___f = FILTERS ( 'Date'[YYYY-MM] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Date'[YYYY-MM] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Date'[YYYY-MM], ", " )
+			    VAR ___x = "'Date'[YYYY-MM] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[Date] ), 
+			    VAR ___f = FILTERS ( 'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[Date] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[Date] )
+			    VAR ___d = CONCATENATEX ( ___t, 'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[Date], ", " )
+			    VAR ___x = "'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[Date] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[Day] ), 
+			    VAR ___f = FILTERS ( 'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[Day] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[Day] )
+			    VAR ___d = CONCATENATEX ( ___t, 'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[Day], ", " )
+			    VAR ___x = "'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[Day] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[Month] ), 
+			    VAR ___f = FILTERS ( 'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[Month] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[Month] )
+			    VAR ___d = CONCATENATEX ( ___t, 'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[Month], ", " )
+			    VAR ___x = "'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[Month] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[MonthNo] ), 
+			    VAR ___f = FILTERS ( 'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[MonthNo] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[MonthNo] )
+			    VAR ___d = CONCATENATEX ( ___t, 'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[MonthNo], ", " )
+			    VAR ___x = "'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[MonthNo] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[Quarter] ), 
+			    VAR ___f = FILTERS ( 'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[Quarter] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[Quarter] )
+			    VAR ___d = CONCATENATEX ( ___t, 'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[Quarter], ", " )
+			    VAR ___x = "'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[Quarter] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[QuarterNo] ), 
+			    VAR ___f = FILTERS ( 'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[QuarterNo] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[QuarterNo] )
+			    VAR ___d = CONCATENATEX ( ___t, 'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[QuarterNo], ", " )
+			    VAR ___x = "'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[QuarterNo] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[Year] ), 
+			    VAR ___f = FILTERS ( 'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[Year] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[Year] )
+			    VAR ___d = CONCATENATEX ( ___t, 'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[Year], ", " )
+			    VAR ___x = "'DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1'[Year] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Disconnected Date'[Date] ), 
+			    VAR ___f = FILTERS ( 'Disconnected Date'[Date] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Disconnected Date'[Date] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Disconnected Date'[Date], ", " )
+			    VAR ___x = "'Disconnected Date'[Date] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Disconnected Date'[Date Integer] ), 
+			    VAR ___f = FILTERS ( 'Disconnected Date'[Date Integer] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Disconnected Date'[Date Integer] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Disconnected Date'[Date Integer], ", " )
+			    VAR ___x = "'Disconnected Date'[Date Integer] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Disconnected Date'[Day Name] ), 
+			    VAR ___f = FILTERS ( 'Disconnected Date'[Day Name] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Disconnected Date'[Day Name] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Disconnected Date'[Day Name], ", " )
+			    VAR ___x = "'Disconnected Date'[Day Name] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Disconnected Date'[Day Name Short] ), 
+			    VAR ___f = FILTERS ( 'Disconnected Date'[Day Name Short] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Disconnected Date'[Day Name Short] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Disconnected Date'[Day Name Short], ", " )
+			    VAR ___x = "'Disconnected Date'[Day Name Short] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Disconnected Date'[Day of Month Number] ), 
+			    VAR ___f = FILTERS ( 'Disconnected Date'[Day of Month Number] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Disconnected Date'[Day of Month Number] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Disconnected Date'[Day of Month Number], ", " )
+			    VAR ___x = "'Disconnected Date'[Day of Month Number] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Disconnected Date'[Day of Week Number] ), 
+			    VAR ___f = FILTERS ( 'Disconnected Date'[Day of Week Number] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Disconnected Date'[Day of Week Number] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Disconnected Date'[Day of Week Number], ", " )
+			    VAR ___x = "'Disconnected Date'[Day of Week Number] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Disconnected Date'[Day of Year Number] ), 
+			    VAR ___f = FILTERS ( 'Disconnected Date'[Day of Year Number] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Disconnected Date'[Day of Year Number] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Disconnected Date'[Day of Year Number], ", " )
+			    VAR ___x = "'Disconnected Date'[Day of Year Number] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Disconnected Date'[Day Offset] ), 
+			    VAR ___f = FILTERS ( 'Disconnected Date'[Day Offset] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Disconnected Date'[Day Offset] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Disconnected Date'[Day Offset], ", " )
+			    VAR ___x = "'Disconnected Date'[Day Offset] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Disconnected Date'[Days in Month] ), 
+			    VAR ___f = FILTERS ( 'Disconnected Date'[Days in Month] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Disconnected Date'[Days in Month] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Disconnected Date'[Days in Month], ", " )
+			    VAR ___x = "'Disconnected Date'[Days in Month] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Disconnected Date'[End of Month] ), 
+			    VAR ___f = FILTERS ( 'Disconnected Date'[End of Month] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Disconnected Date'[End of Month] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Disconnected Date'[End of Month], ", " )
+			    VAR ___x = "'Disconnected Date'[End of Month] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Disconnected Date'[Is Weekday] ), 
+			    VAR ___f = FILTERS ( 'Disconnected Date'[Is Weekday] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Disconnected Date'[Is Weekday] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Disconnected Date'[Is Weekday], ", " )
+			    VAR ___x = "'Disconnected Date'[Is Weekday] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Disconnected Date'[Is Weekend] ), 
+			    VAR ___f = FILTERS ( 'Disconnected Date'[Is Weekend] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Disconnected Date'[Is Weekend] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Disconnected Date'[Is Weekend], ", " )
+			    VAR ___x = "'Disconnected Date'[Is Weekend] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Disconnected Date'[ISO Weeknumber] ), 
+			    VAR ___f = FILTERS ( 'Disconnected Date'[ISO Weeknumber] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Disconnected Date'[ISO Weeknumber] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Disconnected Date'[ISO Weeknumber], ", " )
+			    VAR ___x = "'Disconnected Date'[ISO Weeknumber] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Disconnected Date'[ISO Year] ), 
+			    VAR ___f = FILTERS ( 'Disconnected Date'[ISO Year] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Disconnected Date'[ISO Year] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Disconnected Date'[ISO Year], ", " )
+			    VAR ___x = "'Disconnected Date'[ISO Year] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Disconnected Date'[Month Name] ), 
+			    VAR ___f = FILTERS ( 'Disconnected Date'[Month Name] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Disconnected Date'[Month Name] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Disconnected Date'[Month Name], ", " )
+			    VAR ___x = "'Disconnected Date'[Month Name] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Disconnected Date'[Month Name Default] ), 
+			    VAR ___f = FILTERS ( 'Disconnected Date'[Month Name Default] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Disconnected Date'[Month Name Default] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Disconnected Date'[Month Name Default], ", " )
+			    VAR ___x = "'Disconnected Date'[Month Name Default] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Disconnected Date'[Month Name Short] ), 
+			    VAR ___f = FILTERS ( 'Disconnected Date'[Month Name Short] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Disconnected Date'[Month Name Short] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Disconnected Date'[Month Name Short], ", " )
+			    VAR ___x = "'Disconnected Date'[Month Name Short] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Disconnected Date'[Month Of Year] ), 
+			    VAR ___f = FILTERS ( 'Disconnected Date'[Month Of Year] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Disconnected Date'[Month Of Year] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Disconnected Date'[Month Of Year], ", " )
+			    VAR ___x = "'Disconnected Date'[Month Of Year] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Disconnected Date'[Month Offset] ), 
+			    VAR ___f = FILTERS ( 'Disconnected Date'[Month Offset] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Disconnected Date'[Month Offset] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Disconnected Date'[Month Offset], ", " )
+			    VAR ___x = "'Disconnected Date'[Month Offset] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Disconnected Date'[Month-Year] ), 
+			    VAR ___f = FILTERS ( 'Disconnected Date'[Month-Year] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Disconnected Date'[Month-Year] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Disconnected Date'[Month-Year], ", " )
+			    VAR ___x = "'Disconnected Date'[Month-Year] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Disconnected Date'[Quarter] ), 
+			    VAR ___f = FILTERS ( 'Disconnected Date'[Quarter] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Disconnected Date'[Quarter] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Disconnected Date'[Quarter], ", " )
+			    VAR ___x = "'Disconnected Date'[Quarter] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Disconnected Date'[Quarter Number] ), 
+			    VAR ___f = FILTERS ( 'Disconnected Date'[Quarter Number] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Disconnected Date'[Quarter Number] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Disconnected Date'[Quarter Number], ", " )
+			    VAR ___x = "'Disconnected Date'[Quarter Number] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Disconnected Date'[Quarter Offset] ), 
+			    VAR ___f = FILTERS ( 'Disconnected Date'[Quarter Offset] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Disconnected Date'[Quarter Offset] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Disconnected Date'[Quarter Offset], ", " )
+			    VAR ___x = "'Disconnected Date'[Quarter Offset] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Disconnected Date'[Start of Month] ), 
+			    VAR ___f = FILTERS ( 'Disconnected Date'[Start of Month] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Disconnected Date'[Start of Month] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Disconnected Date'[Start of Month], ", " )
+			    VAR ___x = "'Disconnected Date'[Start of Month] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Disconnected Date'[Start of Week] ), 
+			    VAR ___f = FILTERS ( 'Disconnected Date'[Start of Week] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Disconnected Date'[Start of Week] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Disconnected Date'[Start of Week], ", " )
+			    VAR ___x = "'Disconnected Date'[Start of Week] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Disconnected Date'[Week Offset] ), 
+			    VAR ___f = FILTERS ( 'Disconnected Date'[Week Offset] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Disconnected Date'[Week Offset] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Disconnected Date'[Week Offset], ", " )
+			    VAR ___x = "'Disconnected Date'[Week Offset] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Disconnected Date'[Year] ), 
+			    VAR ___f = FILTERS ( 'Disconnected Date'[Year] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Disconnected Date'[Year] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Disconnected Date'[Year], ", " )
+			    VAR ___x = "'Disconnected Date'[Year] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Disconnected Date'[Year Default] ), 
+			    VAR ___f = FILTERS ( 'Disconnected Date'[Year Default] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Disconnected Date'[Year Default] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Disconnected Date'[Year Default], ", " )
+			    VAR ___x = "'Disconnected Date'[Year Default] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Disconnected Date'[Year Offset] ), 
+			    VAR ___f = FILTERS ( 'Disconnected Date'[Year Offset] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Disconnected Date'[Year Offset] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Disconnected Date'[Year Offset], ", " )
+			    VAR ___x = "'Disconnected Date'[Year Offset] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Disconnected Date'[Year-Quarter] ), 
+			    VAR ___f = FILTERS ( 'Disconnected Date'[Year-Quarter] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Disconnected Date'[Year-Quarter] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Disconnected Date'[Year-Quarter], ", " )
+			    VAR ___x = "'Disconnected Date'[Year-Quarter] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Disconnected Date'[YYYY-MM] ), 
+			    VAR ___f = FILTERS ( 'Disconnected Date'[YYYY-MM] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Disconnected Date'[YYYY-MM] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Disconnected Date'[YYYY-MM], ", " )
+			    VAR ___x = "'Disconnected Date'[YYYY-MM] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[Date] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[Date] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[Date] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[Date], ", " )
+			    VAR ___x = "'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[Date] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[Day] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[Day] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[Day] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[Day], ", " )
+			    VAR ___x = "'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[Day] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[Month] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[Month] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[Month] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[Month], ", " )
+			    VAR ___x = "'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[Month] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[MonthNo] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[MonthNo] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[MonthNo] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[MonthNo], ", " )
+			    VAR ___x = "'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[MonthNo] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[Quarter] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[Quarter] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[Quarter] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[Quarter], ", " )
+			    VAR ___x = "'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[Quarter] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[QuarterNo] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[QuarterNo] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[QuarterNo] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[QuarterNo], ", " )
+			    VAR ___x = "'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[QuarterNo] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[Year] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[Year] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[Year] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[Year], ", " )
+			    VAR ___x = "'LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf'[Year] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[Date] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[Date] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[Date] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[Date], ", " )
+			    VAR ___x = "'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[Date] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[Day] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[Day] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[Day] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[Day], ", " )
+			    VAR ___x = "'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[Day] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[Month] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[Month] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[Month] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[Month], ", " )
+			    VAR ___x = "'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[Month] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[MonthNo] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[MonthNo] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[MonthNo] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[MonthNo], ", " )
+			    VAR ___x = "'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[MonthNo] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[Quarter] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[Quarter] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[Quarter] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[Quarter], ", " )
+			    VAR ___x = "'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[Quarter] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[QuarterNo] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[QuarterNo] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[QuarterNo] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[QuarterNo], ", " )
+			    VAR ___x = "'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[QuarterNo] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[Year] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[Year] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[Year] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[Year], ", " )
+			    VAR ___x = "'LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c'[Year] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[Date] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[Date] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[Date] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[Date], ", " )
+			    VAR ___x = "'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[Date] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[Day] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[Day] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[Day] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[Day], ", " )
+			    VAR ___x = "'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[Day] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[Month] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[Month] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[Month] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[Month], ", " )
+			    VAR ___x = "'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[Month] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[MonthNo] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[MonthNo] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[MonthNo] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[MonthNo], ", " )
+			    VAR ___x = "'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[MonthNo] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[Quarter] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[Quarter] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[Quarter] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[Quarter], ", " )
+			    VAR ___x = "'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[Quarter] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[QuarterNo] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[QuarterNo] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[QuarterNo] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[QuarterNo], ", " )
+			    VAR ___x = "'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[QuarterNo] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[Year] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[Year] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[Year] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[Year], ", " )
+			    VAR ___x = "'LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad'[Year] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[Date] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[Date] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[Date] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[Date], ", " )
+			    VAR ___x = "'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[Date] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[Day] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[Day] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[Day] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[Day], ", " )
+			    VAR ___x = "'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[Day] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[Month] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[Month] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[Month] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[Month], ", " )
+			    VAR ___x = "'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[Month] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[MonthNo] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[MonthNo] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[MonthNo] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[MonthNo], ", " )
+			    VAR ___x = "'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[MonthNo] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[Quarter] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[Quarter] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[Quarter] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[Quarter], ", " )
+			    VAR ___x = "'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[Quarter] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[QuarterNo] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[QuarterNo] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[QuarterNo] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[QuarterNo], ", " )
+			    VAR ___x = "'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[QuarterNo] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[Year] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[Year] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[Year] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[Year], ", " )
+			    VAR ___x = "'LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501'[Year] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[Date] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[Date] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[Date] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[Date], ", " )
+			    VAR ___x = "'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[Date] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[Day] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[Day] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[Day] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[Day], ", " )
+			    VAR ___x = "'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[Day] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[Month] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[Month] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[Month] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[Month], ", " )
+			    VAR ___x = "'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[Month] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[MonthNo] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[MonthNo] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[MonthNo] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[MonthNo], ", " )
+			    VAR ___x = "'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[MonthNo] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[Quarter] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[Quarter] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[Quarter] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[Quarter], ", " )
+			    VAR ___x = "'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[Quarter] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[QuarterNo] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[QuarterNo] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[QuarterNo] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[QuarterNo], ", " )
+			    VAR ___x = "'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[QuarterNo] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[Year] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[Year] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[Year] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[Year], ", " )
+			    VAR ___x = "'LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7'[Year] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[Date] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[Date] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[Date] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[Date], ", " )
+			    VAR ___x = "'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[Date] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[Day] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[Day] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[Day] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[Day], ", " )
+			    VAR ___x = "'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[Day] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[Month] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[Month] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[Month] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[Month], ", " )
+			    VAR ___x = "'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[Month] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[MonthNo] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[MonthNo] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[MonthNo] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[MonthNo], ", " )
+			    VAR ___x = "'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[MonthNo] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[Quarter] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[Quarter] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[Quarter] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[Quarter], ", " )
+			    VAR ___x = "'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[Quarter] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[QuarterNo] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[QuarterNo] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[QuarterNo] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[QuarterNo], ", " )
+			    VAR ___x = "'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[QuarterNo] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[Year] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[Year] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[Year] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[Year], ", " )
+			    VAR ___x = "'LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5'[Year] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[Date] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[Date] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[Date] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[Date], ", " )
+			    VAR ___x = "'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[Date] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[Day] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[Day] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[Day] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[Day], ", " )
+			    VAR ___x = "'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[Day] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[Month] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[Month] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[Month] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[Month], ", " )
+			    VAR ___x = "'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[Month] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[MonthNo] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[MonthNo] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[MonthNo] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[MonthNo], ", " )
+			    VAR ___x = "'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[MonthNo] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[Quarter] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[Quarter] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[Quarter] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[Quarter], ", " )
+			    VAR ___x = "'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[Quarter] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[QuarterNo] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[QuarterNo] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[QuarterNo] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[QuarterNo], ", " )
+			    VAR ___x = "'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[QuarterNo] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[Year] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[Year] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[Year] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[Year], ", " )
+			    VAR ___x = "'LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35'[Year] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[Date] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[Date] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[Date] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[Date], ", " )
+			    VAR ___x = "'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[Date] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[Day] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[Day] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[Day] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[Day], ", " )
+			    VAR ___x = "'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[Day] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[Month] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[Month] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[Month] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[Month], ", " )
+			    VAR ___x = "'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[Month] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[MonthNo] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[MonthNo] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[MonthNo] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[MonthNo], ", " )
+			    VAR ___x = "'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[MonthNo] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[Quarter] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[Quarter] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[Quarter] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[Quarter], ", " )
+			    VAR ___x = "'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[Quarter] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[QuarterNo] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[QuarterNo] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[QuarterNo] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[QuarterNo], ", " )
+			    VAR ___x = "'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[QuarterNo] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[Year] ), 
+			    VAR ___f = FILTERS ( 'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[Year] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[Year] )
+			    VAR ___d = CONCATENATEX ( ___t, 'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[Year], ", " )
+			    VAR ___x = "'LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd'[Year] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( Parameter[Parameter] ), 
+			    VAR ___f = FILTERS ( Parameter[Parameter] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, Parameter[Parameter] )
+			    VAR ___d = CONCATENATEX ( ___t, Parameter[Parameter], ", " )
+			    VAR ___x = "Parameter[Parameter] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Sales Raw Data'[Birth Year] ), 
+			    VAR ___f = FILTERS ( 'Sales Raw Data'[Birth Year] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Sales Raw Data'[Birth Year] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Sales Raw Data'[Birth Year], ", " )
+			    VAR ___x = "'Sales Raw Data'[Birth Year] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Sales Raw Data'[Cost] ), 
+			    VAR ___f = FILTERS ( 'Sales Raw Data'[Cost] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Sales Raw Data'[Cost] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Sales Raw Data'[Cost], ", " )
+			    VAR ___x = "'Sales Raw Data'[Cost] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Sales Raw Data'[Country] ), 
+			    VAR ___f = FILTERS ( 'Sales Raw Data'[Country] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Sales Raw Data'[Country] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Sales Raw Data'[Country], ", " )
+			    VAR ___x = "'Sales Raw Data'[Country] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Sales Raw Data'[Customer Age] ), 
+			    VAR ___f = FILTERS ( 'Sales Raw Data'[Customer Age] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Sales Raw Data'[Customer Age] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Sales Raw Data'[Customer Age], ", " )
+			    VAR ___x = "'Sales Raw Data'[Customer Age] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Sales Raw Data'[Customer Gender] ), 
+			    VAR ___f = FILTERS ( 'Sales Raw Data'[Customer Gender] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Sales Raw Data'[Customer Gender] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Sales Raw Data'[Customer Gender], ", " )
+			    VAR ___x = "'Sales Raw Data'[Customer Gender] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Sales Raw Data'[Date] ), 
+			    VAR ___f = FILTERS ( 'Sales Raw Data'[Date] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Sales Raw Data'[Date] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Sales Raw Data'[Date], ", " )
+			    VAR ___x = "'Sales Raw Data'[Date] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Sales Raw Data'[Generation] ), 
+			    VAR ___f = FILTERS ( 'Sales Raw Data'[Generation] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Sales Raw Data'[Generation] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Sales Raw Data'[Generation], ", " )
+			    VAR ___x = "'Sales Raw Data'[Generation] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Sales Raw Data'[index] ), 
+			    VAR ___f = FILTERS ( 'Sales Raw Data'[index] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Sales Raw Data'[index] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Sales Raw Data'[index], ", " )
+			    VAR ___x = "'Sales Raw Data'[index] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Sales Raw Data'[Product Category] ), 
+			    VAR ___f = FILTERS ( 'Sales Raw Data'[Product Category] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Sales Raw Data'[Product Category] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Sales Raw Data'[Product Category], ", " )
+			    VAR ___x = "'Sales Raw Data'[Product Category] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Sales Raw Data'[Profit] ), 
+			    VAR ___f = FILTERS ( 'Sales Raw Data'[Profit] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Sales Raw Data'[Profit] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Sales Raw Data'[Profit], ", " )
+			    VAR ___x = "'Sales Raw Data'[Profit] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Sales Raw Data'[Quantity] ), 
+			    VAR ___f = FILTERS ( 'Sales Raw Data'[Quantity] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Sales Raw Data'[Quantity] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Sales Raw Data'[Quantity], ", " )
+			    VAR ___x = "'Sales Raw Data'[Quantity] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Sales Raw Data'[Revenue] ), 
+			    VAR ___f = FILTERS ( 'Sales Raw Data'[Revenue] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Sales Raw Data'[Revenue] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Sales Raw Data'[Revenue], ", " )
+			    VAR ___x = "'Sales Raw Data'[Revenue] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Sales Raw Data'[Sales] ), 
+			    VAR ___f = FILTERS ( 'Sales Raw Data'[Sales] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Sales Raw Data'[Sales] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Sales Raw Data'[Sales], ", " )
+			    VAR ___x = "'Sales Raw Data'[Sales] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Sales Raw Data'[State] ), 
+			    VAR ___f = FILTERS ( 'Sales Raw Data'[State] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Sales Raw Data'[State] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Sales Raw Data'[State], ", " )
+			    VAR ___x = "'Sales Raw Data'[State] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Sales Raw Data'[Sub Category] ), 
+			    VAR ___f = FILTERS ( 'Sales Raw Data'[Sub Category] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Sales Raw Data'[Sub Category] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Sales Raw Data'[Sub Category], ", " )
+			    VAR ___x = "'Sales Raw Data'[Sub Category] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Sales Raw Data'[Unit Cost] ), 
+			    VAR ___f = FILTERS ( 'Sales Raw Data'[Unit Cost] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Sales Raw Data'[Unit Cost] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Sales Raw Data'[Unit Cost], ", " )
+			    VAR ___x = "'Sales Raw Data'[Unit Cost] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			 & IF ( 
+			    ISFILTERED ( 'Sales Raw Data'[Unit Price] ), 
+			    VAR ___f = FILTERS ( 'Sales Raw Data'[Unit Price] ) 
+			    VAR ___r = COUNTROWS ( ___f ) 
+			    VAR ___t = TOPN ( MaxFilters, ___f, 'Sales Raw Data'[Unit Price] )
+			    VAR ___d = CONCATENATEX ( ___t, 'Sales Raw Data'[Unit Price], ", " )
+			    VAR ___x = "'Sales Raw Data'[Unit Price] = " & ___d & IF(___r > MaxFilters, ", ... [" & ___r & " items selected]") & " " 
+			    RETURN ___x & UNICHAR(13) & UNICHAR(10)
+			)
+			---- MODEL MEASURES END ----
+			
+			
+			```
+		lineageTag: 850d6114-c5ca-4d10-9e03-617b2cfe352e
+
+	measure Header =
+			
+			VAR _header_main="Period from Year 2015-2016"
+			Return
+			_header_main
+		lineageTag: 7605ee8c-b8a9-4f2d-b9ee-a5ae69eb0860
+
+	measure Title_Product_Sales =
+			
+			VAR _year=SELECTEDVALUE('Date'[Year])
+			VAR _mth=SELECTEDVALUE('Date'[Month Name])
+			VAR _country=SELECTEDVALUE('Sales Raw Data'[Country])
+			VAR _city=SELECTEDVALUE('Sales Raw Data'[State])
+			VAR _prod=SELECTEDVALUE('Sales Raw Data'[Sub Category])
+			VAR subtitles="for " & _year & " |" & _mth  & " |" & _country  & " |" &_city
+			RETURN
+			subtitles
+		lineageTag: 16a56074-0eb5-46bc-850c-87d633ba2512
+
+	measure subTitle_Sales_bySubProd =
+			
+			VAR _year=SELECTEDVALUE('Date'[Year])
+			VAR _mth=SELECTEDVALUE('Date'[Month Name])
+			VAR _country=SELECTEDVALUE('Sales Raw Data'[Country])
+			VAR _city=SELECTEDVALUE('Sales Raw Data'[State])
+			VAR _prod=SELECTEDVALUE('Sales Raw Data'[Sub Category])
+			VAR subtitles=_year & " " &_mth &" vs. Previous Month" & "|" & _country  & " |" &_city
+			RETURN
+			subtitles
+		lineageTag: c5d68be2-d341-4dfb-ab82-b2afbf493ad9
+
+	measure 'Bike Total Sales' = CALCULATE([Total Sales], 'Sales Raw Data'[Product Category]="Bikes")
+		lineageTag: e540a228-ba7f-417d-ad60-20fa5b097735
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Clothing Total Sales' = CALCULATE([Total Sales], 'Sales Raw Data'[Product Category]="Clothing")
+		lineageTag: b848de5a-754a-47ed-b7df-b9d9e3151390
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Accessories Total Sales' = CALCULATE([Total Sales], 'Sales Raw Data'[Product Category]="Accessories")
+		lineageTag: fb10fc90-338b-461d-b75a-5d4a606a4d31
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Bike_Diff =
+			
+			[Total Sales]-[Bike Total Sales]
+		lineageTag: 347a4b7b-7e1b-49cd-bc28-063648915667
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Clothing_Diff =
+			
+			[Total Sales]-[Clothing Total Sales]
+		lineageTag: 8a595966-eeb8-4e5c-88e0-4da259eee325
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Accessories_Diff =
+			
+			[Total Sales]-[Accessories Total Sales]
+		lineageTag: 361a7b6e-3eb6-467b-b854-7d0c28af72c8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Clothing Dummy' = ([Clothing_Diff]+[Clothing Total Sales])*(1/3)
+		lineageTag: de02d74c-bf0c-475f-b9c8-83637392c93f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Accessories Dummy' = ([Accessories_Diff]+[Accessories Total Sales])*(1/3)
+		lineageTag: 2fa67389-c749-4b95-a843-c9a9cef64723
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Bike Dummy' = ([Bike_Diff]+[Bike Total Sales])*(1/3)
+		lineageTag: 61cbf2be-20b0-4b49-9e3d-b8026b82b9a5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Header 2' =
+			
+			VAR _header_main="Financial Overview"
+			Return
+			_header_main
+		lineageTag: dfda55ba-922b-406f-b7dc-a2b2f320cdb5
+
+	measure 'Filled Dot icone' = "⧫"
+		lineageTag: 46bfd279-d649-4895-b721-58f688bbbc42
+
+	measure 'Dot icone' = "◊"
+		lineageTag: ca2a1df3-a9c4-44dc-b247-5fe2bf1aa9da
+
+	measure Mth2Date = TOTALMTD([Total Sales], 'Date'[Date])
+		lineageTag: f9baaae7-9dfe-455d-b7ea-71fc39efbb04
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure PM_Mth2Date = TOTALMTD([Total Sales (PM)], 'Date'[Date])
+		lineageTag: 8b095f1b-6043-4370-8d69-9a461d25c8f2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Y icone' =
+			
+			VAR _current_mth=CALCULATE([Mth2Date], 'Sales Raw Data'[Generation]="Y (Millennials)")
+			VAR _pm_mth=CALCULATE([PM_Mth2Date], 'Sales Raw Data'[Generation]="Y (Millennials)")
+			VAR _mom=DIVIDE(_current_mth,_pm_mth)*100
+			VAR _icone_rep=IF(_mom>100, 10,ROUND(_mom/10,0))
+			VAR _final= REPT([Filled Dot icone],_icone_rep)& REPT([Dot icone],10-_icone_rep)
+			Return
+			_final
+		lineageTag: bbec887c-09a5-461e-98dc-286827ce7dfc
+
+	measure 'X icone' =
+			
+			VAR _current_mth=CALCULATE([Mth2Date], 'Sales Raw Data'[Generation]="X")
+			VAR _pm_mth=CALCULATE([PM_Mth2Date], 'Sales Raw Data'[Generation]="X")
+			VAR _mom=DIVIDE(_current_mth,_pm_mth)*100
+			VAR _icone_rep=IF(_mom>100, 10,ROUND(_mom/10,0))
+			VAR _final= REPT([Filled Dot icone],_icone_rep)& REPT([Dot icone],10-_icone_rep)
+			Return
+			_final
+		lineageTag: 31cf4f86-9d08-44cb-bd6b-c9babfa999ec
+
+	measure 'Baby Boomers' =
+			
+			VAR _current_mth=CALCULATE([Mth2Date], 'Sales Raw Data'[Generation]="Baby Boomers")
+			VAR _pm_mth=CALCULATE([PM_Mth2Date], 'Sales Raw Data'[Generation]="Baby Boomers")
+			VAR _mom=DIVIDE(_current_mth,_pm_mth)*100
+			VAR _icone_rep=IF(_mom>100, 10,ROUND(_mom/10,0))
+			VAR _final= REPT([Filled Dot icone],_icone_rep)& REPT([Dot icone],10-_icone_rep)
+			Return
+			_final
+		lineageTag: 3031ec19-8753-427e-beda-237943866f46
+
+	measure 'Z (iGen)' =
+			
+			VAR _current_mth=CALCULATE([Mth2Date], 'Sales Raw Data'[Generation]="Z (iGen)")
+			VAR _pm_mth=CALCULATE([PM_Mth2Date], 'Sales Raw Data'[Generation]="Z (iGen)")
+			VAR _mom=DIVIDE(_current_mth,_pm_mth)*100
+			VAR _icone_rep=IF(_mom>100, 10,ROUND(_mom/10,0))
+			VAR _final= REPT([Filled Dot icone],_icone_rep)& REPT([Dot icone],10-_icone_rep)
+			Return
+			_final
+		lineageTag: 6c0535e6-a3ad-4b98-b8fa-edf4fff82edf
+
+	measure 'Y label' =
+			
+			VAR _current_mth=FORMAT(CALCULATE([Mth2Date], 'Sales Raw Data'[Generation]="Y (Millennials)"), "#,##0,.0")
+			VAR _pm_mth=FORMAT(CALCULATE([PM_Mth2Date], 'Sales Raw Data'[Generation]="Y (Millennials)"),  "#,##0,.0")
+			VAR _tab= "‏‏‎ ‎ "
+			VAR _gen="Y"
+			VAR _tabnr=13-len(_gen)
+			VAR _final= _gen & REPT(_tab,_tabnr) & _current_mth & " / " & _pm_mth
+			Return
+			_final
+		lineageTag: 0b942a90-3906-4c51-8553-94bb3d1c5773
+
+	measure U+200F = "U+200F"
+		lineageTag: bc429f87-aff4-46cf-af33-132542d5fb22
+
+	measure U+200E = "U+200E"
+		lineageTag: ee09f06b-fe91-46bd-977f-54e80f2cb849
+
+	measure 'X label' =
+			
+			VAR _current_mth=FORMAT(CALCULATE([Mth2Date], 'Sales Raw Data'[Generation]="X"), "#,##0,.0")
+			VAR _pm_mth=FORMAT(CALCULATE([PM_Mth2Date], 'Sales Raw Data'[Generation]="X"),  "#,##0,.0")
+			VAR _tab= "‏‏‎ ‎ "
+			VAR _gen="X"
+			VAR _tabnr=13-len(_gen)
+			VAR _final= _gen & REPT(_tab,_tabnr) & _current_mth & " / " & _pm_mth
+			Return
+			_final
+		lineageTag: b42be765-e15b-4a90-985e-d12fb9011f05
+
+	measure 'Baby Boomers label' =
+			
+			VAR _current_mth=FORMAT(CALCULATE([Mth2Date], 'Sales Raw Data'[Generation]="Baby Boomers"), "#,##0,.0")
+			VAR _pm_mth=FORMAT(CALCULATE([PM_Mth2Date], 'Sales Raw Data'[Generation]="Baby Boomers"),  "#,##0,.0")
+			VAR _tab= "‏‏‎ ‎ "
+			VAR _gen="Baby Boomers"
+			VAR _tabnr=13-len(_gen)
+			VAR _final= _gen & REPT(_tab,_tabnr) & _current_mth & " / " & _pm_mth
+			Return
+			_final
+		lineageTag: 6439038f-9b68-4823-9837-9961dfba9ab1
+
+	measure 'Z label' =
+			
+			VAR _current_mth=FORMAT(CALCULATE([Mth2Date], 'Sales Raw Data'[Generation]="Z (iGen)"), "#,##0,.0")
+			VAR _pm_mth=FORMAT(CALCULATE([PM_Mth2Date], 'Sales Raw Data'[Generation]="Z (iGen)"),  "#,##0,.0")
+			VAR _tab= "‏‏‎ ‎ "
+			VAR _gen="Z (iGen)"
+			VAR _tabnr=13-len(_gen)
+			VAR _final= _gen & REPT(_tab,_tabnr) & _current_mth & " / " & _pm_mth
+			Return
+			_final
+		lineageTag: c43b0ffa-ebfd-4340-817b-bf08b9bf6c9f
+
+	measure 'Y value %' =
+			
+			VAR _current_mth=FORMAT(CALCULATE([Mth2Date], 'Sales Raw Data'[Generation]="Y (Millennials)"), "#,##0,.0")
+			VAR _pm_mth=FORMAT(CALCULATE([PM_Mth2Date], 'Sales Raw Data'[Generation]="Y (Millennials)"),  "#,##0,.0")
+			
+			VAR _final=  divide(_current_mth,_pm_mth)
+			Return
+			_final
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 775ec770-a033-4753-9bb7-34ae277e2b58
+
+	measure 'X value %' =
+			
+			VAR _current_mth=FORMAT(CALCULATE([Mth2Date], 'Sales Raw Data'[Generation]="X"), "#,##0,.0")
+			VAR _pm_mth=FORMAT(CALCULATE([PM_Mth2Date], 'Sales Raw Data'[Generation]="X"),  "#,##0,.0")
+			VAR _final= Divide( _current_mth, _pm_mth)
+			Return
+			_final
+		formatString: 0%;-0%;0%
+		lineageTag: e71566a4-e6a4-45d0-8b4b-9090ff1dac3e
+
+	measure 'Baby Boomers value %' =
+			
+			VAR _current_mth=FORMAT(CALCULATE([Mth2Date], 'Sales Raw Data'[Generation]="Baby Boomers"), "#,##0,.0")
+			VAR _pm_mth=FORMAT(CALCULATE([PM_Mth2Date], 'Sales Raw Data'[Generation]="Baby Boomers"),  "#,##0,.0")
+			VAR _final= Divide(_current_mth, _pm_mth)
+			Return
+			_final
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: b5935cac-5c63-4c45-b37b-7a4c060b0c3e
+
+	measure 'Z value %' =
+			
+			VAR _current_mth=FORMAT(CALCULATE([Mth2Date], 'Sales Raw Data'[Generation]="Z (iGen)"), "#,##0,.0")
+			VAR _pm_mth=FORMAT(CALCULATE([PM_Mth2Date], 'Sales Raw Data'[Generation]="Z (iGen)"),  "#,##0,.0")
+			VAR _final= Divide(_current_mth, _pm_mth)
+			Return
+			_final
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 90142ee2-6e1f-4a46-a8ff-b74c431822f5
+
+	measure Label = -1
+		formatString: 0
+		lineageTag: 651f22c5-255f-498a-89c7-4d904a5c4a1b
+
+	measure 'Label Sales by State' =
+			
+			VAR _tab= "‏‏‎ ‎ "
+			VAR _result= SELECTEDVALUE('Sales Raw Data'[State]) & REPT(_tab,4) & FORMAT(DIVIDE([Total Sales],[Total Sales (PM)])-1, "+0.0%;-0.0%")
+			Return
+			_result
+		lineageTag: 329e109f-bac5-42ff-9ec7-7460c5e3e0a3
+
+	measure 'Opaque Area Sparkline' = ```
+			
+			// line and area colour - use %23 instead of # for Firefox compatibility (Measure Derived from Eldersveld Modified by Kolosko)
+			VAR Defs = "<defs>
+			    <linearGradient id='grad' x1='0' y1='25' x2='0' y2='50' gradientUnits='userSpaceOnUse'>
+			        <stop stop-color='navy' offset='0' />
+			        <stop stop-color='transparent' offset='1' />
+			    </linearGradient>
+			</defs>"
+			// "Date" field used in this example along the X axis
+			VAR XMinDate = MIN('Date'[Date])
+			VAR XMaxDate = MAX('Date'[Date])
+			
+			// Obtain overall min and overall max measure values when evaluated for each date
+			VAR YMinValue = MINX(Values('Date'[Date]),CALCULATE([Total Sales]))
+			VAR YMaxValue = MAXX(Values('Date'[Date]),CALCULATE([Total Sales]))
+			
+			// Build table of X & Y coordinates and fit to 50 x 150 viewbox
+			VAR SparklineTable = ADDCOLUMNS(
+			    SUMMARIZE('Date','Date'[Date]),
+			        "X",INT(150 * DIVIDE('Date'[Date] - XMinDate, XMaxDate - XMinDate)),
+			        "Y",INT(50 * DIVIDE([Total Sales] - YMinValue,YMaxValue - YMinValue)))
+			
+			// Concatenate X & Y coordinates to build the sparkline
+			VAR Lines = CONCATENATEX(SparklineTable,[X] & "," & 50-[Y]," ", 'Date'[Date])
+			
+			// Add to SVG, and verify Data Category is set to Image URL for this measure
+			VAR SVGImageURL = 
+			    "data:image/svg+xml;utf8," & 
+			    "<svg xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='0 0 150 50'>" & Defs &
+			     "<polyline fill='url(#grad)' fill-opacity='0.3' stroke='navy' 
+			      stroke-width='3' points=' 0 50 " & Lines & 
+			      " 150 150 Z '/></svg>"
+			RETURN SVGImageURL
+			```
+		lineageTag: 2decb8ed-d173-4418-a854-bbac2d7122d1
+
+	measure 'TU_Opaque Area Sparkline' = ```
+			
+			// line and area colour - use %23 instead of # for Firefox compatibility (Measure Derived from Eldersveld Modified by Kolosko)
+			VAR Defs = "<defs>
+			    <linearGradient id='grad' x1='0' y1='25' x2='0' y2='50' gradientUnits='userSpaceOnUse'>
+			        <stop stop-color='navy' offset='0' />
+			        <stop stop-color='transparent' offset='1' />
+			    </linearGradient>
+			</defs>"
+			// "Date" field used in this example along the X axis
+			VAR XMinDate = MIN('Date'[Date])
+			VAR XMaxDate = MAX('Date'[Date])
+			
+			// Obtain overall min and overall max measure values when evaluated for each date
+			VAR YMinValue = MINX(Values('Date'[Date]),CALCULATE([Total Units]))
+			VAR YMaxValue = MAXX(Values('Date'[Date]),CALCULATE([Total Units]))
+			
+			// Build table of X & Y coordinates and fit to 50 x 150 viewbox
+			VAR SparklineTable = ADDCOLUMNS(
+			    SUMMARIZE('Date','Date'[Date]),
+			        "X",INT(150 * DIVIDE('Date'[Date] - XMinDate, XMaxDate - XMinDate)),
+			        "Y",INT(50 * DIVIDE([Total Units] - YMinValue,YMaxValue - YMinValue)))
+			
+			// Concatenate X & Y coordinates to build the sparkline
+			VAR Lines = CONCATENATEX(SparklineTable,[X] & "," & 50-[Y]," ", 'Date'[Date])
+			
+			// Add to SVG, and verify Data Category is set to Image URL for this measure
+			VAR SVGImageURL = 
+			    "data:image/svg+xml;utf8," & 
+			    "<svg xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='0 0 150 50'>" & Defs &
+			     "<polyline fill='url(#grad)' fill-opacity='0.3' stroke='navy' 
+			      stroke-width='3' points=' 0 50 " & Lines & 
+			      " 150 150 Z '/></svg>"
+			RETURN SVGImageURL
+			```
+		lineageTag: e3ac9a57-4c9b-4542-9599-0417030b2863
+
+	measure 'TP_Opaque Area Sparkline' = ```
+			
+			// line and area colour - use %23 instead of # for Firefox compatibility (Measure Derived from Eldersveld Modified by Kolosko)
+			VAR Defs = "<defs>
+			    <linearGradient id='grad' x1='0' y1='25' x2='0' y2='50' gradientUnits='userSpaceOnUse'>
+			        <stop stop-color='navy' offset='0' />
+			        <stop stop-color='transparent' offset='1' />
+			    </linearGradient>
+			</defs>"
+			// "Date" field used in this example along the X axis
+			VAR XMinDate = MIN('Date'[Date])
+			VAR XMaxDate = MAX('Date'[Date])
+			
+			// Obtain overall min and overall max measure values when evaluated for each date
+			VAR YMinValue = MINX(Values('Date'[Date]),CALCULATE([Total Profit]))
+			VAR YMaxValue = MAXX(Values('Date'[Date]),CALCULATE([Total Profit]))
+			
+			// Build table of X & Y coordinates and fit to 50 x 150 viewbox
+			VAR SparklineTable = ADDCOLUMNS(
+			    SUMMARIZE('Date','Date'[Date]),
+			        "X",INT(150 * DIVIDE('Date'[Date] - XMinDate, XMaxDate - XMinDate)),
+			        "Y",INT(50 * DIVIDE([Total Profit] - YMinValue,YMaxValue - YMinValue)))
+			
+			// Concatenate X & Y coordinates to build the sparkline
+			VAR Lines = CONCATENATEX(SparklineTable,[X] & "," & 50-[Y]," ", 'Date'[Date])
+			
+			// Add to SVG, and verify Data Category is set to Image URL for this measure
+			VAR SVGImageURL = 
+			    "data:image/svg+xml;utf8," & 
+			    "<svg xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='0 0 150 50'>" & Defs &
+			     "<polyline fill='url(#grad)' fill-opacity='0.3' stroke='navy' 
+			      stroke-width='3' points=' 0 50 " & Lines & 
+			      " 150 150 Z '/></svg>"
+			RETURN SVGImageURL
+			```
+		lineageTag: 7cfe82ae-3321-4c7a-bac6-707df89a2c54
+
+	measure _PieChart = ```
+			
+			// Derived from Martens
+			    // Values
+				VAR Percentage =  [Total Margine] // value has to be >= 0 and <=1
+				VAR Colour = "navy" 
+				VAR CirclePercent = 180 - (IF(Percentage > .9999, .9999, Percentage) * 360)
+				VAR ShortDistance = if(CirclePercent < 0, 1,0)
+				VAR Radians = RADIANS(CirclePercent)
+				VAR XArcEnd = sin(Radians)*.8
+				VAR YArcEnd = cos(Radians)*.8
+			    // svg string 
+				VAR svgHeader = 
+			    "data:image/svg+xml;utf8,<svg width='30' height='30' xmlns:svg='http://www.w3.org/2000/svg' xmlns='http://www.w3.org/2000/svg' viewBox='-1 -1 2 2'>" 
+				VAR BackgroundArc ="<path d='M 0 -.8 A 0.8 0.8 0 1 1 "&sin(RADIANS(-179.99))*.8&" "& cos(RADIANS(-179.99))*.8&"  L 0 0 z' fill='lightsteelblue'></path>" 
+				VAR Arc ="<path d='M 0 -.8 A 0.8 0.8 0 " & ShortDistance & " 1 " & XArcEnd & " " & YArcEnd & "  L 0 0 z' fill='" & Colour & "'></path>"
+				VAR svgFooter = "</svg>"
+			    return svgHeader & BackgroundArc & Arc & svgFooter
+			```
+		lineageTag: dda18245-f3e9-4632-830e-695b30448314
+		dataCategory: ImageUrl
+
+	measure 'Icon Callout Progress' = ```
+			
+			--- Field to sort the measures by in a table ---
+			VAR SORT = [Total Margine]*100
+			--- Progress Bar Info ---
+			VAR PERCENTAGEFILL = [Total Margine]*100
+			VAR BarColour = "Navy"
+			--- svg symbol in its own coordinate system ---
+			--- replace with your own svg but ensure to place id tag id='mySymbol'---
+			VAR Symbol =   
+			  "<symbol id='mySymbol' width='10' height='10' viewBox='0 0 2 2'>
+			    <circle cx='1' cy='1' r='1' />
+			  </symbol>"
+			VAR Symbol1 =   
+			  "<symbol id='mySymbol' width='15' height='15' viewBox='-1 -1 2 2'>
+			    <path fill='#F4BF3D' d='M0,.5L.6,.8L.5,.1L1,-.3L.3,-.4L0,-1L-.3,-.4L-1,-.3L-.5,.1L-.6,.8L0,.5Z'/>
+			  </symbol>"
+			VAR Symbol2 =   
+			  "<symbol id='mySymbol' width='15' height='15' viewBox='-1 -1 2 2'>
+			    <path d='M.83.09,0,.91-.83.09a.59.59,0,0,1,0-.83A.59.59,0,0,1,0-.74a.59.59,0,0,1,.83,0A.59.59,0,0,1,.83.09Z'/>
+			  </symbol>"
+			VAR Symbol3 =   
+			  "<symbol id='mySymbol' width='15' height='15' viewBox='0 0 1220 1601'>
+			    <g transform='translate(-1681 -906)'><path d='M2342 993.77C2342 962.969 2366.97 938 2397.77 938L2813.2 938C2844 938 2868.97 962.969 2868.97 993.77L2868.97 2419.23C2868.97 2450.03 2844 2475 2813.2 2475L2397.77 2475C2366.97 2475 2342 2450.03 2342 2419.23Z' stroke='#FFFFFF' stroke-width='64.1667' stroke-miterlimit='8' fill='#F4BF3D' fill-rule='evenodd'/><path d='M2032 1380.79C2032 1349.98 2056.98 1325 2087.8 1325L2503.48 1325C2534.3 1325 2559.28 1349.98 2559.28 1380.79 2559.85 1745.42 2560.43 2110.05 2561 2474.68 2532.64 2475.43 2534.3 2474.63 2503.48 2474.63L2087.8 2474.63C2056.98 2474.63 2032 2449.65 2032 2418.84L2032 1380.79Z' stroke='#FFFFFF' stroke-width='64.1667' stroke-miterlimit='8' fill='#F4BF3D' fill-rule='evenodd'/><path d='M1713 1769.35C1713 1732.15 1743.21 1702 1780.47 1702L2167.81 1702C2205.07 1702 2235.28 1732.15 2235.28 1769.35 2235.85 2003.9 2236.43 2238.45 2237 2473L2167.81 2472.79 1780.47 2472.79C1743.21 2472.79 1713 2442.63 1713 2405.43L1713 1769.35Z' stroke='#FFFFFF' stroke-width='64.1667' stroke-miterlimit='8' fill='#F4BF3D' fill-rule='evenodd'/></g>
+			  </symbol>"
+			VAR symbol4 = "<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 100 100'>
+			  <symbol id='bike' viewBox='0 0 100 100'>
+			    <circle cx='30' cy='70' r='15' stroke='black' stroke-width='2' fill='none' />
+			    <circle cx='70' cy='70' r='15' stroke='black' stroke-width='2' fill='none' />
+			    <line x1='30' y1='70' x2='50' y2='50' stroke='black' stroke-width='2' />
+			    <line x1='50' y1='50' x2='70' y2='70' stroke='black' stroke-width='2' />
+			    <line x1='50' y1='50' x2='50' y2='30' stroke='black' stroke-width='2' />
+			    <line x1='50' y1='30' x2='35' y2='45' stroke='black' stroke-width='2' />
+			    <line x1='50' y1='30' x2='65' y2='45' stroke='black' stroke-width='2' />
+			    <circle cx='50' cy='50' r='3' stroke='black' stroke-width='2' fill='black' />
+			    <line x1='50' y1='50' x2='60' y2='60' stroke='black' stroke-width='2' />
+			  </symbol>
+			  <use href='#bike' x='0' y='0' width='100' height='100' />
+			</svg>"
+			VAR symbol5 =  "<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 100 100'>
+			  <symbol id='bikeWheel' viewBox='0 0 100 100'>
+			    <!-- Zewnętrzna opona -->
+			    <circle cx='50' cy='50' r='45' stroke='black' stroke-width='5' fill='none' />
+			    <!-- Piasta -->
+			    <circle cx='50' cy='50' r='8' stroke='black' stroke-width='2' fill='black' />
+			    <!-- Szprychy -->
+			    <line x1='50' y1='5' x2='50' y2='95' stroke='black' stroke-width='2' />
+			    <line x1='5' y1='50' x2='95' y2='50' stroke='black' stroke-width='2' />
+			    <line x1='15' y1='15' x2='85' y2='85' stroke='black' stroke-width='2' />
+			    <line x1='85' y1='15' x2='15' y2='85' stroke='black' stroke-width='2' />
+			  </symbol>
+			
+			  <!-- Użycie symbolu koła rowerowego -->
+			  <use href='#bikeWheel' x='0' y='0' width='100' height='100' />
+			</svg>"
+			
+			
+			RETURN
+			
+			"data:image/svg+xml;utf8," & 
+			"<svg desc = '" & SORT & "' width='100' height='25' viewBox='-2 -2 105 20' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' display= 'block'  overflow='visible'>
+			<rect id='track' x='0' y='15' rx='0' ry='0' width='100' height='25' fill='#D0D0D0' />
+			" & symbol5  & "
+			<rect id='fill' x='0' y='15' rx='0' ry='0' width="& "'"& PERCENTAGEFILL &"'"&" height='10' fill='"&BarColour&"'></rect>
+			<use href='#mySymbol' x='0' y='-2' style='opacity:1.0' />
+			<text x='17' y='8' font-weight='bold' font-family='Segoe UI, sans-serif' >"&FORMAT(PERCENTAGEFILL/100, "0%")&"</text>
+			</svg>"
+			
+			```
+		lineageTag: 475549b3-289c-4e14-91d0-a5647054c8e7
+		dataCategory: ImageUrl
+
+	measure Dummy = "BW"
+		lineageTag: f3ccbaf2-3ea7-43f9-bf82-5190b45742f9
+
+	measure Label2 = If([Total Sales]>[Total Sales (PM)],[Total Sales],[Total Sales (PM)])
+		formatString: 0
+		lineageTag: fecaf55f-6d70-4f18-9f52-f0b887d28b39
+
+	measure 'Label Comparison' =
+			
+			VAR _current_value=[Total Sales]
+			VAR _variance_vs_pm=[Total Sales]-[Total Sales (PM)]
+			VAR _result= Format(_current_value,"#,##0,") & "k|Δ" & Format(_variance_vs_pm,"#,##0,") & "k"
+			Return
+			_result
+		lineageTag: 2ce453f3-7ad3-42e1-a5b6-e30e7aa31c36
+
+	measure 'Color Label' = If ( [Total Sales]>[Total Sales (PM)], "Green", "Red")
+		lineageTag: 95e95e7d-703e-45a3-9fd0-6a7beb5d542b
+
+	measure 'Sparkline Points' = ```
+			
+			// Static line color - use %23 instead of # for Firefox compatibility (Measure Derived from Eldersveld Modified by Kolosko)
+			VAR LineColour = "%237469c8"
+			VAR PointColour = "white"
+			
+			// "Date" field used in this example along the X axis
+			VAR XMinDate = MIN('Date'[Date])
+			VAR XMaxDate = MAX('Date'[Date])
+			
+			// Obtain overall min and overall max measure values when evaluated for each date
+			VAR YMinValue = MINX(Values('Date'[Date]),CALCULATE([Total Sales]))
+			VAR YMaxValue = MAXX(Values('Date'[Date]),CALCULATE([Total Sales]))
+			
+			// Build table of X & Y coordinates and fit to 50 x 150 viewbox
+			VAR SparklineTable = ADDCOLUMNS(
+			    SUMMARIZE('Date','Date'[Date]),
+			        "X",INT(150 * DIVIDE('Date'[Date] - XMinDate, XMaxDate - XMinDate)),
+			        "Y",INT(50 * DIVIDE([Total Sales] - YMinValue,YMaxValue - YMinValue)))
+			
+			// Concatenate X & Y coordinates to build the sparkline
+			VAR Lines = CONCATENATEX(SparklineTable,[X] & "," & 50-[Y]," ", 'Date'[Date])
+			VAR PointTable=
+			    ADDCOLUMNS(
+			        SUMMARIZE('Date','Date'[Date]),
+			            "@Colour",IF([Total Sales]=YMaxValue,"Green",IF([Total Sales]=YMinValue,"Red",LineColour)),
+			        "@Points", "<circle cx='"&INT(150 * DIVIDE('Date'[Date] - XMinDate, XMaxDate - XMinDate))&"' cy='" & 50 -  INT(50 * DIVIDE([Total Sales] - YMinValue,YMaxValue - YMinValue)) & "' r='3' stroke='"&LineColour&"' stroke-width='1'  fill='"&LineColour&"'/>")
+			
+			// Last data points on the line
+			VAR LastSparkYValue = MAXX( FILTER(SparklineTable, 'Date'[Date] = XMaxDate), [Y])
+			VAR LastSparkXValue = MAXX( FILTER(SparklineTable, 'Date'[Date] = XMaxDate), [X])
+			
+			// Add to SVG, and verify Data Category is set to Image URL for this measure
+			VAR SVGImageURL = 
+			    "data:image/svg+xml;utf8," & 
+			    --- gradient---
+			    "<svg xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='-7 -7 164 64'>" &
+			    --- Lines---
+			    "<polyline 
+			        fill='transparent' stroke='" & LineColour & "' 
+			        stroke-linecap='round' stroke-linejoin='round' 
+			        stroke-width='2' points=' " & Lines & 
+			      " '/>" &
+			    --- Last Point---
+			        CONCATENATEX(PointTable,[@Points]) &
+			        "<circle cx='"& LastSparkXValue & "' cy='" & 50 - LastSparkYValue & "' r='4' stroke='" & LineColour & "' stroke-width='3' fill='" & PointColour & "' />" &
+			        "</svg>"
+			        
+			RETURN SVGImageURL
+			```
+		lineageTag: 2836bba3-8b40-4ab3-a66e-04f2e3ed4f9d
+		dataCategory: ImageUrl
+
+	measure MaxWeekendShade = MAXX(ALLSELECTED('Date'[Date]),[TSales])
+		lineageTag: b3a94c57-9898-48a8-ada7-9ec1cc6a83f7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure WeekendShade = If(min('Date'[Is Weekend]),[MaxWeekendShade])
+		lineageTag: fcfc8c39-7895-42f8-b5b2-1e02f070368c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure TSales = SUM('Sales Raw Data'[Sales])*0.8
+		lineageTag: b9786c02-ea59-4fa9-bf9f-8b6587a69be1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '25th Percentile of Total Sales' = ```
+			
+			PERCENTILEX.INC('Sales Raw Data','Sales Raw Data'[Sales],0.25
+			)
+			
+			```
+		displayFolder: Boxplot
+		lineageTag: 46a774eb-adbc-49fb-83d8-083e1b9621db
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '75th Percentile of Total Sales' = ```
+			
+			PERCENTILEX.INC('Sales Raw Data','Sales Raw Data'[Sales],0.75
+			)
+			
+			```
+		displayFolder: Boxplot
+		lineageTag: 77a93e01-9c1e-4427-a766-751ea9481238
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Median of Total Sales' =
+			
+			PERCENTILEX.INC('Sales Raw Data','Sales Raw Data'[Sales],0.5
+			)
+		displayFolder: Boxplot
+		lineageTag: 683fe770-1c00-4e72-a712-28abcae0cec6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Max Sales' =
+			
+			MAX('Sales Raw Data'[Sales])
+		displayFolder: Boxplot
+		lineageTag: 44bb5ccd-066c-4027-9fc0-673ace0a2c44
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Min Sales' =
+			
+			MIN('Sales Raw Data'[Sales])
+		displayFolder: Boxplot
+		lineageTag: 331982bc-d004-4060-b338-fdeba5b29d99
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg Sales' =
+			
+			AVERAGE('Sales Raw Data'[Sales])
+		displayFolder: Boxplot
+		lineageTag: 8cef4bbb-2c89-4a56-926a-eb563273b146
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Column1
+		dataType: string
+		lineageTag: 107fa4a1-c98b-4faa-91c3-e59251f800c6
+		summarizeBy: none
+		sourceColumn: Column1
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Calculations = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

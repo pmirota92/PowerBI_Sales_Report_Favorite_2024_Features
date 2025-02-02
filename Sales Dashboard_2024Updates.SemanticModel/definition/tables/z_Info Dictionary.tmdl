@@ -1,0 +1,46 @@
+table 'z_Info Dictionary'
+	lineageTag: 8b844b40-0855-4258-9419-6d4430e8577e
+
+	column ID
+		formatString: 0
+		lineageTag: ae35b5e6-6be6-402e-aba0-ea98e3233023
+		summarizeBy: count
+		isNameInferred
+		sourceColumn: z_Info.View.Columns[ID]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Table
+		lineageTag: b77df7a7-acd4-442f-a7cd-c3cac7ffb40c
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: z_Info.View.Columns[Table]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Name
+		lineageTag: 1c48a392-1a33-4aed-ba12-dee0cb210701
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: z_Info.View.Columns[Name]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Type
+		lineageTag: 117f301d-f4a6-4467-bad7-1252016d3a79
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: z_Info.View.Columns[Type]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'z_Info Dictionary' = calculated
+		mode: import
+		source =
+				UNION(
+				    SUMMARIZE('z_Info.View.Columns','z_Info.View.Columns'[ID],'z_Info.View.Columns'[Table],'z_Info.View.Columns'[Name],'z_Info.View.Columns'[Type]),
+				    SUMMARIZE('z_Info.View.Measures','z_Info.View.Measures'[ID],'z_Info.View.Measures'[Table],'z_Info.View.Measures'[Name],'z_Info.View.Measures'[Expression])
+				)
+
+	annotation PBI_Id = 0c4a8b0c5bdd40e8852a4dd1161c0399
+

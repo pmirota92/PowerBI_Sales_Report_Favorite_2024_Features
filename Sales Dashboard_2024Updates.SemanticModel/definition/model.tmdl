@@ -1,0 +1,47 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-GB
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["Sales Raw Data","Date","Calculations"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBIDesktopVersion = 2.139.1678.0 (24.12)+2a034ab280bddf891eb7bb9ebfe6996f9c3a3196
+
+annotation PBI_ProTooling = ["DaxQueryView_Desktop","DevMode"]
+
+ref table 'Sales Raw Data'
+ref table DateTableTemplate_2999223d-81d5-45af-80fd-4cb56e6d40f1
+ref table Date
+ref table LocalDateTable_771ae1fe-5725-494c-a7de-042eba5cf501
+ref table LocalDateTable_39b68a36-9004-4e40-ac87-a3ae9979262c
+ref table LocalDateTable_4c9ea8d8-274f-42b6-ac6f-aa6899bef0ad
+ref table LocalDateTable_9b55ee23-fe67-42b8-a928-8b19ab270be5
+ref table Calculations
+ref table 'Disconnected Date'
+ref table LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd
+ref table LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35
+ref table LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf
+ref table LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7
+ref table Parameter
+ref table Customer
+ref table ParamRows
+ref table ParamCol
+ref table ParamValue
+ref table ParamValues
+ref table 'Parameter 2'
+ref table 'Parameter 3'
+ref table 'Product Type Order'
+ref table 'z_Info.View.Columns'
+ref table 'z_Info.View.Measures'
+ref table 'z_Info.View.Relationships'
+ref table 'z_Info.View.Tables'
+ref table '05: Dictionary'
+ref table 'z_Info Dictionary'
+
+ref cultureInfo en-US
+

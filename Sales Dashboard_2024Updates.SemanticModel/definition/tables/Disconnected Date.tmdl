@@ -1,0 +1,298 @@
+table 'Disconnected Date'
+	lineageTag: 53ed0e4e-e7de-4a8c-a970-78ba55dd46a2
+
+	column Date
+		formatString: General Date
+		lineageTag: 634bb0fd-8fe6-4f8c-b02b-fcf9c0ffb919
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Date[Date]
+
+		variation Variation
+			isDefault
+			relationship: f50c9399-05f6-4d14-aab5-9b6e4e986739
+			defaultHierarchy: LocalDateTable_f56e1c5a-0933-4d4e-ab23-8cf13d6b5efd.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Date Integer'
+		formatString: 0
+		lineageTag: 969c34b7-b57d-4a0f-a0b2-44b8e4a47807
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Date[Date Integer]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		formatString: 0
+		lineageTag: fa4117bc-ecfc-4fba-9fc6-9d41d0d7928c
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Date[Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Default'
+		lineageTag: 83ab0332-f1a7-44c5-8512-7cbb853ab55f
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Date[Year Default]
+
+		annotation SummarizationSetBy = Automatic
+
+	column YYYY-MM
+		lineageTag: c9e09c3f-ff78-4ea0-bf8e-59f9face3f8a
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Date[YYYY-MM]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month-Year
+		lineageTag: f336ee54-0331-49f9-aca1-73ca62173a51
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Date[Month-Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Of Year'
+		formatString: 0
+		lineageTag: 901c6933-e70f-4d6c-9c71-c2bf48dfdb93
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Date[Month Of Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Name'
+		lineageTag: cc93ae4f-4370-4174-9a91-3999a204c0fb
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Date[Month Name]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Name Short'
+		lineageTag: 7cc4699a-13c7-4a80-92f0-9cc31c317361
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Date[Month Name Short]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Name Default'
+		lineageTag: 8077aab4-d082-43cd-baab-5a3e4c04ba83
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Date[Month Name Default]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Start of Month'
+		formatString: General Date
+		lineageTag: f0f7b391-a37f-4c60-9666-95e4f3f693a8
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Date[Start of Month]
+
+		variation Variation
+			isDefault
+			relationship: 3b237f3a-c3bf-440d-ad21-cff64c3362aa
+			defaultHierarchy: LocalDateTable_aceb5a80-0479-4ec2-a8ec-7441b8cdcf35.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'End of Month'
+		formatString: General Date
+		lineageTag: ec3be6f7-fc3e-4484-8221-2e41d8080a15
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Date[End of Month]
+
+		variation Variation
+			isDefault
+			relationship: 8e958b82-1e0f-415f-9393-5cf90c51023e
+			defaultHierarchy: LocalDateTable_2567927f-5e0c-41e6-8b02-40e13e9202cf.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Days in Month'
+		formatString: 0
+		lineageTag: e51bc00d-b94e-4927-ae4b-2a0bcc1ef0ad
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Date[Days in Month]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'ISO Weeknumber'
+		formatString: 0
+		lineageTag: ebdc011b-2d17-4241-a07b-b94533acbaee
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Date[ISO Weeknumber]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'ISO Year'
+		formatString: 0
+		lineageTag: 3318e05e-eedc-48b5-bc2f-a34a0e82b7b2
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Date[ISO Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Start of Week'
+		formatString: General Date
+		lineageTag: c4b6663d-5a10-4b65-bffc-c87a1253d089
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Date[Start of Week]
+
+		variation Variation
+			isDefault
+			relationship: bacc3aeb-854a-4ed8-8b4b-0742ab4924a7
+			defaultHierarchy: LocalDateTable_91065902-6b20-4cca-9930-0b40db90afd7.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Quarter Number'
+		formatString: 0
+		lineageTag: 04cccd17-bd59-4836-b235-6dcfd0a0dddd
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Date[Quarter Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		lineageTag: 2532a22a-781f-40da-99d7-422f848aabce
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Date[Quarter]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year-Quarter
+		lineageTag: 624a85ea-eec4-4317-a31d-75e5e2b2b8d0
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Date[Year-Quarter]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day Name'
+		lineageTag: 1145a024-319f-4503-bf74-5d3fb0a53a52
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Date[Day Name]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day Name Short'
+		lineageTag: d41da494-c227-4441-912e-79af97e11c3c
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Date[Day Name Short]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day of Month Number'
+		formatString: 0
+		lineageTag: fe0326b6-ed40-4c7f-a52e-630d3f6d21c0
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Date[Day of Month Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day of Week Number'
+		formatString: 0
+		lineageTag: b7199fa8-1420-4e83-a721-aa6014fa3483
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Date[Day of Week Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day of Year Number'
+		formatString: 0
+		lineageTag: ceedaab7-ddad-46c5-a6cd-c65280ec4511
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Date[Day of Year Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day Offset'
+		formatString: 0
+		lineageTag: 6d44658c-9341-475d-b322-893d13c04dc6
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Date[Day Offset]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Week Offset'
+		formatString: 0
+		lineageTag: 6107ed43-c79e-4af1-800a-aeff643fc434
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Date[Week Offset]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Offset'
+		formatString: 0
+		lineageTag: 93a8cf6c-4a39-45dd-acef-dd7772a03985
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Date[Month Offset]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Quarter Offset'
+		formatString: 0
+		lineageTag: 615a8400-f5b8-4130-9b30-808ff0d55096
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Date[Quarter Offset]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Offset'
+		formatString: 0
+		lineageTag: b5499747-717e-4919-ac73-ab03d7186eeb
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Date[Year Offset]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Is Weekend'
+		formatString: 0
+		lineageTag: 67135475-2385-4ffb-9a71-a9b2c103ba26
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Date[Is Weekend]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Is Weekday'
+		formatString: 0
+		lineageTag: 69d6e734-cb40-496c-8bde-c030b7644a10
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Date[Is Weekday]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Disconnected Date' = calculated
+		mode: import
+		source = 'Date'
+
+	annotation PBI_Id = b0c646fe4d764fc4b06c4d6a73ed1cbc
+

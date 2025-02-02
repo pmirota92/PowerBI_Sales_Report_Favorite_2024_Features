@@ -1,0 +1,48 @@
+table Customer
+	lineageTag: 9efe5c13-19f9-45c0-b3a9-b7501338ed35
+
+	column Customer
+		lineageTag: dff95945-1ea0-4eba-9036-ce6bc273a37c
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Customer Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Customer Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Fields'
+		isHidden
+		lineageTag: 4828af46-7ef0-4df1-b640-9a5f5d7aa73b
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Customer Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Order'
+		isHidden
+		formatString: 0
+		lineageTag: 922de667-2f82-413f-a290-e90c3d98028a
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Customer = calculated
+		mode: import
+		source =
+				{
+				    ("Customer Age", NAMEOF('Sales Raw Data'[Customer Age]), 0),
+				    ("Generation", NAMEOF('Sales Raw Data'[Generation]), 1)
+				}
+
+	annotation PBI_Id = b02fba370a0847209c4ffa2a94725245
+

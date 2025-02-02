@@ -1,0 +1,54 @@
+table ParamValue
+	lineageTag: db78c931-1c14-4a6f-9418-c51cc2cb4a22
+
+	column ParamValue
+		lineageTag: 5e1c8035-5dd1-4307-8a5d-9cce09de8bd5
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'ParamValue Order'
+
+		relatedColumnDetails
+			groupByColumn: 'ParamValue Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'ParamValue Fields'
+		isHidden
+		lineageTag: 14c03ca8-7390-4340-ac6c-855b926aaf6d
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'ParamValue Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'ParamValue Order'
+		isHidden
+		formatString: 0
+		lineageTag: 7f533d36-2f4f-4535-b8d8-a50ab3cce6d8
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition ParamValue = calculated
+		mode: import
+		source =
+				{
+				    ("Sales", NAMEOF('Sales Raw Data'[Sales]), 0),
+				    ("Revenue", NAMEOF('Sales Raw Data'[Revenue]), 1),
+				    ("Quantity", NAMEOF('Sales Raw Data'[Quantity]), 2),
+				    ("Profit", NAMEOF('Sales Raw Data'[Profit]), 3),
+				    ("Cost", NAMEOF('Sales Raw Data'[Cost]), 4),
+				    ("Unit Price", NAMEOF('Sales Raw Data'[Unit Price]), 5),
+				    ("Unit Cost", NAMEOF('Sales Raw Data'[Unit Cost]), 6),
+				    ("YTD Sales", NAMEOF('Sales Raw Data'[YTD Sales]), 7)
+				}
+
+	annotation PBI_Id = 14d4378a9f294afea659ba1d50c8e014
+

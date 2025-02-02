@@ -1,0 +1,49 @@
+table 'Parameter 3'
+	lineageTag: fff9f87a-6bb6-4812-8f47-182aaabd8d6b
+
+	column Parameter
+		lineageTag: 8d5f3bb8-6752-4adc-b1c4-dc42650640a0
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Parameter Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Parameter Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Fields'
+		isHidden
+		lineageTag: 9b529312-7b54-4bbe-b198-24353d654d72
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Parameter Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Order'
+		isHidden
+		formatString: 0
+		lineageTag: 7062ae43-26df-4fc9-bd24-35697e0eca04
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Parameter 3' = calculated
+		mode: import
+		source =
+				{
+				    ("Gender", NAMEOF('Sales Raw Data'[Customer Gender]), 0),
+				    ("Generation", NAMEOF('Sales Raw Data'[Generation]), 1),
+				    ("State", NAMEOF('Sales Raw Data'[State]), 2)
+				}
+
+	annotation PBI_Id = 07639f4f67964ebeb333c3282780bd03
+
